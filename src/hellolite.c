@@ -18,28 +18,32 @@
 #include "ResourceConstants.h"
 #include "WebView.h"
 
+// Globals
 Boolean gDone = false;
 Boolean gInBackground = false;
 Boolean gMenubarDirty = true;
 
+// Defines
 #define kMoveToFront (WindowPtr)-1L
-#define kScrollBarWidth   15
-
+#define kScrollBarWidth 15
 #define kWindowInset 2
 #define RectWidth(rect) ((rect).right - (rect).left)
 #define RectHeight(rect) ((rect).bottom - (rect).top)
 
-void drawWindow(WindowPtr windowPtr) {
+void drawWindow(WindowPtr window)
+{
 	GrafPtr savedPort;
-    WebViewHandle webViewH = (WebViewHandle)GetWRefCon(windowPtr);
+    WebViewRef webView = (WebViewRef)GetWRefCon(window);
 
 	GetPort(&savedPort);
-	SetPort(windowPtr);
-	EraseRgn(windowPtr->visRgn);
-    DrawWebView(webViewH);
+	SetPort(window);
+	// TODO: don't erase?
+	EraseRgn(window->visRgn);
+    DrawWebView(webView);
 	SetPort(savedPort);
 }
 
+/*
 void fixWindowAfterResize(WindowPtr windowPtr)
 {
 	GrafPtr savedPort;
@@ -48,6 +52,16 @@ void fixWindowAfterResize(WindowPtr windowPtr)
 	SetPort(windowPtr);
 	InvalRect(&windowPtr->portRect);
 	SetPort(savedPort);
+}
+*/
+
+void setViewRects(WindowPtr window)
+{
+    WebViewRef webView = (WebViewRef)GetWRefCon(window);
+    Rect rect;
+
+    SetRect(&rect, 0, 0, RectWidth(window->portRect) - kScrollBarWidth, RectHeight(window->portRect) - kScrollBarWidth);
+    SetWebViewRect(webView, &rect);
 }
 
 void invalidateScrollBarArea(WindowPtr windowPtr)
@@ -69,7 +83,8 @@ void invalidateScrollBarArea(WindowPtr windowPtr)
     SetPort(savedPort);
 }
 
-void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr) {
+void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr)
+{
 	Rect limitRect, savedViewRect;
 	long growSize;
 	RgnHandle localUpdateRgn;
@@ -78,7 +93,8 @@ void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr) {
 
 	SetRect(&limitRect, kMinDocWidth, kMinDocHeight, kMaxDocWidth, kMaxDocHeight);
 	growSize = GrowWindow(windowPtr, eventPtr->where, &limitRect);
-	if (growSize != 0) {
+	if (growSize != 0)
+    {
 /*
 		documentHandle = (DocumentHandle)GetWRefCon(windowPtr);
 		savedViewRect = (**documentHandle).viewRect;
@@ -88,6 +104,7 @@ void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr) {
 		invalidateScrollBarArea(windowPtr);
 		SizeWindow(windowPtr, LoWord(growSize), HiWord(growSize), true);
 		invalidateScrollBarArea(windowPtr);
+		setViewRects(windowPtr);
 //		fixWindowAfterResize(windowPtr);
 /*
 		result = SectRect(&savedViewRect, &(**documentHandle).viewRect, &savedViewRect);
@@ -98,7 +115,8 @@ void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr) {
 	}
 }
 
-void doZoomWindow(WindowPtr windowPtr, short zoomInOrOut) {
+void doZoomWindow(WindowPtr windowPtr, short zoomInOrOut)
+{
 /*
 	GrafPtr savePort;
 
@@ -106,7 +124,8 @@ void doZoomWindow(WindowPtr windowPtr, short zoomInOrOut) {
 	SetPort(windowPtr);
 	EraseRect(&windowPtr->portRect);
 
-	if (zoomInOrOut == inZoomOut) {
+	if (zoomInOrOut == inZoomOut)
+    {
 		getIdealWindowRect(windowPtr, &(**(WStateDataHandle)((WindowPeek)windowPtr)->dataHandle).stdState, 1, 1, false);
 	}
 	ZoomWindow(windowPtr, zoomInOrOut, windowPtr == FrontWindow());
@@ -116,26 +135,36 @@ void doZoomWindow(WindowPtr windowPtr, short zoomInOrOut) {
 */
 }
 
-void closeDocumentWindow(WindowPtr windowPtr) {
-	WebViewHandle webViewH;
+void closeDocumentWindow(WindowPtr windowPtr)
+{
+	WebViewRef webViewRef;
 
-	webViewH = (WebViewHandle)GetWRefCon(windowPtr);
-	DisposeWebView(webViewH);
+	webViewRef = (WebViewRef)GetWRefCon(windowPtr);
+	DisposeWebView(webViewRef);
 	DisposeWindow(windowPtr);
 }
 
-short getWindowType(WindowPtr windowPtr) {
+short getWindowType(WindowPtr windowPtr)
+{
 	short windowKind, windowType;
 
-	if (windowPtr == NULL) {
+	if (windowPtr == NULL)
+    {
 		windowType = kNoWindow;
-	} else {
+	}
+	else
+    {
 		windowKind = ((WindowPeek)windowPtr)->windowKind;
-		if (windowKind == userKind) {
+		if (windowKind == userKind)
+        {
 			windowType = kDocumentWindow;
-		} else if (windowKind < 0) {
+		}
+		else if (windowKind < 0)
+        {
 			windowType = kDAWindow;
-		} else {
+		}
+		else
+        {
 			windowType = GetWRefCon(windowPtr);
 		}
 	}
@@ -143,34 +172,44 @@ short getWindowType(WindowPtr windowPtr) {
 	return windowType;
 }
 
-void doContentClick(WindowPtr windowPtr, EventRecord *eventPtr) {
+void doContentClick(WindowPtr windowPtr, EventRecord *eventPtr)
+{
 }
 
-void handleKeyDown(WindowPtr windowPtr, EventRecord *eventPtr) {
+void handleKeyDown(WindowPtr windowPtr, EventRecord *eventPtr)
+{
 	short windowType;
 
 	windowType = getWindowType(windowPtr);
-	switch (windowType) {
+	switch (windowType)
+	{
 		case kDocumentWindow:
 			break;
 	}
 }
 
-void setItemEnabled(MenuHandle menuHandle, short menuItem, Boolean enabled) {
-	if (menuHandle != NULL) {
-		if (menuItem == 0 && enabled != (**menuHandle).enableFlags & 1L) {
+void setItemEnabled(MenuHandle menuHandle, short menuItem, Boolean enabled)
+{
+	if (menuHandle != NULL)
+	{
+		if (menuItem == 0 && enabled != (**menuHandle).enableFlags & 1L)
+		{
 			gMenubarDirty = true;
 		}
 
-		if (enabled) {
+		if (enabled)
+		{
 			EnableItem(menuHandle, menuItem);
-		} else {
+		}
+		else
+		{
 			DisableItem(menuHandle, menuItem);
 		}
 	}
 }
 
-void adjustMenuItems(void) {
+void adjustMenuItems(void)
+{
 	WindowPtr frontWindowPtr;
 	short frontWindowType;
 	MenuHandle menuHandle;
@@ -182,7 +221,8 @@ void adjustMenuItems(void) {
 	setItemEnabled(menuHandle, iClose, frontWindowType != kNoWindow);
 }
 
-void adjustMenus(void) {
+void adjustMenus(void)
+{
 	WindowPtr frontWindowPtr;
 	short frontWindowType;
 	MenuHandle menuHandle;
@@ -194,22 +234,26 @@ void adjustMenus(void) {
 	setItemEnabled(menuHandle, 0, frontWindowType == kDAWindow);
 }
 
-void doZoomCmd(WindowPtr windowPtr) {
+void doZoomCmd(WindowPtr windowPtr)
+{
 	short windowType;
 
 	windowType = getWindowType(windowPtr);
-	switch (windowType) {
+	switch (windowType)
+	{
 		case kDocumentWindow:
 			doZoomWindow(windowPtr, EqualRect(&(**((WindowPeek)windowPtr)->contRgn).rgnBBox, &(**(WStateDataHandle)((WindowPeek)windowPtr)->dataHandle).userState) ? inZoomOut : inZoomIn);
 			break;
 	}
 }
 
-void doCloseCmd(WindowPtr windowPtr) {
+void doCloseCmd(WindowPtr windowPtr)
+{
 	short windowType;
 
 	windowType = getWindowType(windowPtr);
-	switch (windowType) {
+	switch (windowType)
+	{
 		case kDocumentWindow:
 			closeDocumentWindow(windowPtr);
 			break;
@@ -221,60 +265,75 @@ void doCloseCmd(WindowPtr windowPtr) {
 	adjustMenus();
 }
 
-void doQuitCmd(void) {
+void doQuitCmd(void)
+{
 	WindowPtr frontWindowPtr;
 
-	while (frontWindowPtr = FrontWindow()) {
+	while (frontWindowPtr = FrontWindow())
+	{
 		doCloseCmd(frontWindowPtr);
 	}
 
 	gDone = true;
 }
 
-void doNewCmd(Boolean showWindow) {
+void doNewCmd(Boolean showWindow)
+{
     Rect strucRect, contRect, windRect;
     WindowPtr windowP;
-    WebViewHandle webViewH;
-    char *html = "<html><head><title>Hello</title></head><body><p>Hello world<p></body></html>";
-
-    // Make the window visible but offscreen so that its structure and
-    // content regions get initialized.
-    SetRect(&windRect, -32001, -32001, -32000, -32000);
-	windowP = GetNewWindow(rWindow, NULL, kMoveToFront);
-    if (windowP) {
-        if (showWindow) {
+    WebViewRef webViewRef;
+    char *html = "<html><head><title>Hello World</title></head><body><p>The quick brown fox jumps over the lazy dog.</p></body></html>";
+    windowP = GetNewWindow(rWindow, NULL, kMoveToFront);
+    if (windowP)
+    {
+        webViewRef = NewWebView(windowP);
+        if (webViewRef)
+        {
+            SetWebViewHTML(webViewRef, html);
+            SetWRefCon(windowP, (long)webViewRef);
+            // Make the window visible but offscreen so that its structure and
+            // content regions get initialized.
+            MoveWindow(windowP, -32000, -32000, false);
             ShowWindow(windowP);
-        }
-        strucRect = (**((WindowPeek)windowP)->strucRgn).rgnBBox;
-        contRect = (**((WindowPeek)windowP)->contRgn).rgnBBox;
-        windRect = qd.screenBits.bounds;
-        windRect.left += kWindowInset + (contRect.left - strucRect.left);
-        windRect.top += kWindowInset + (contRect.top - strucRect.top)
-            + LMGetMBarHeight();
-        windRect.right -= kWindowInset - (contRect.right - strucRect.right);
-        windRect.bottom -= kWindowInset - (contRect.bottom - strucRect.bottom);
-        SizeWindow(windowP, RectWidth(windRect), RectHeight(windRect), true);
-        MoveWindow(windowP, windRect.left, windRect.top, true);
-        webViewH = NewWebView(html);
-        if (webViewH) {
-            SetWRefCon(windowP, (long)webViewH);
+            strucRect = (**((WindowPeek)windowP)->strucRgn).rgnBBox;
+            contRect = (**((WindowPeek)windowP)->contRgn).rgnBBox;
+            windRect = qd.screenBits.bounds;
+            windRect.left += kWindowInset + (contRect.left - strucRect.left);
+            windRect.top += kWindowInset + (contRect.top - strucRect.top)
+                + LMGetMBarHeight();
+            windRect.right -= kWindowInset - (contRect.right - strucRect.right);
+            windRect.bottom -= kWindowInset - (contRect.bottom - strucRect.bottom);
+            if (!showWindow)
+            {
+                HideWindow(windowP);
+            }
+            SizeWindow(windowP, RectWidth(windRect), RectHeight(windRect), true);
+            MoveWindow(windowP, windRect.left, windRect.top, true);
+            setViewRects(windowP);
             adjustMenus();
-        } else {
+        }
+        else
+        {
             DisposeWindow(windowP);
         }
     }
 }
 
-void doAboutCmd() {
+void doAboutCmd()
+{
 }
 
-void handleEditCommand(short menuItem) {
-	if (!SystemEdit(menuItem - 1)) {
+void handleEditCommand(short menuItem)
+{
+	if (!SystemEdit(menuItem - 1))
+	{
 	}
 }
 
-void handleFileCommand(short menuItem) {
-	switch (menuItem) {
+void handleFileCommand(short menuItem)
+{
+	switch (menuItem)
+	{
 		case iNew:
 			doNewCmd(true);
 			break;
@@ -287,18 +346,21 @@ void handleFileCommand(short menuItem) {
 	}
 }
 
-void handleAppleCommand(short menuItem) {
+void handleAppleCommand(short menuItem)
+{
 	MenuHandle menuHandle;
 	short daRefNum;
 	Str255 itemName;
 
-	switch (menuItem) {
+	switch (menuItem)
+	{
 		case iAbout:
 			doAboutCmd();
 			break;
 		default:
 			menuHandle = GetMenuHandle(mApple);
-			if (menuHandle != NULL) {
+			if (menuHandle != NULL)
+			{
 				GetMenuItemText(menuHandle, menuItem, itemName);
 				daRefNum = OpenDeskAcc(itemName);
 				adjustMenus();
@@ -306,14 +368,16 @@ void handleAppleCommand(short menuItem) {
 	}
 }
 
-void doMenuCommand(long menuResult) {
+void doMenuCommand(long menuResult)
+{
 	short menuID, menuItem;
 	unsigned long ticks;
 
 	ticks = TickCount();
 	menuID = HiWord(menuResult);
 	menuItem = LoWord(menuResult);
-	switch (menuID) {
+	switch (menuID)
+	{
 		case mApple:
 			handleAppleCommand(menuItem);
 			break;
@@ -328,12 +392,14 @@ void doMenuCommand(long menuResult) {
 	HiliteMenu(0);
 }
 
-void setUpMenus(void) {
+void setUpMenus(void)
+{
 	Handle menuBarHandle;
 	MenuHandle menuHandle;
 
 	menuBarHandle = GetNewMBar(rMenuBar);
-	if (menuBarHandle == NULL) {
+	if (menuBarHandle == NULL)
+	{
 		return;
 	}
 
@@ -341,7 +407,8 @@ void setUpMenus(void) {
 	DisposeHandle(menuBarHandle);
 
 	menuHandle = GetMenuHandle(mApple);
-	if (menuHandle != NULL) {
+	if (menuHandle != NULL)
+	{
 		AppendResMenu(menuHandle, 'DRVR');
 	}
 
@@ -349,31 +416,38 @@ void setUpMenus(void) {
 	adjustMenuItems();
 }
 
-void doActivate(WindowPtr windowPtr, Boolean activate, EventRecord *eventPtr) {
+void doActivate(WindowPtr windowPtr, Boolean activate, EventRecord *eventPtr)
+{
 }
 
-void doSuspendResumeEvent(EventRecord *eventPtr) {
+void doSuspendResumeEvent(EventRecord *eventPtr)
+{
 	gInBackground = !(eventPtr->message & resumeFlag);
 	doActivate(FrontWindow(), !gInBackground, eventPtr);
 }
 
-void doIdle(EventRecord *eventPtr) {
+void doIdle(EventRecord *eventPtr)
+{
 	WindowPtr frontWindowPtr;
 	short frontWindowType;
 
 	frontWindowPtr = FrontWindow();
 	frontWindowType = getWindowType(frontWindowPtr);
-	switch (frontWindowType) {
+	switch (frontWindowType)
+	{
 		case kDocumentWindow:
 			break;
 	}
 }
 
-void doHighLevelEvent(EventRecord *eventPtr) {
+void doHighLevelEvent(EventRecord *eventPtr)
+{
 }
 
-void doOSEvent(EventRecord *eventPtr) {
-	switch ((eventPtr->message >> 24) & 0xFF) {
+void doOSEvent(EventRecord *eventPtr)
+{
+	switch ((eventPtr->message >> 24) & 0xFF)
+	{
 		case mouseMovedMessage:
 			doIdle(eventPtr);
 			break;
@@ -383,11 +457,13 @@ void doOSEvent(EventRecord *eventPtr) {
 	}
 }
 
-void doDiskEvent(EventRecord *eventPtr) {
+void doDiskEvent(EventRecord *eventPtr)
+{
 	Point point;
 	OSErr err;
 
-	if (HiWord(eventPtr->message) != noErr) {
+	if (HiWord(eventPtr->message) != noErr)
+	{
 		DILoad();
 		SetPt(&point, 100, 100);
 		err = DIBadMount(point, eventPtr->message);
@@ -395,40 +471,49 @@ void doDiskEvent(EventRecord *eventPtr) {
 	}
 }
 
-void doUpdate(WindowPtr windowPtr) {
+void doUpdate(WindowPtr windowPtr)
+{
 	short windowType;
 
 	windowType = getWindowType(windowPtr);
-	switch (windowType) {
+	switch (windowType)
+	{
 		case kDocumentWindow:
 			BeginUpdate(windowPtr);
-			drawWindow(windowPtr);
 			DrawGrowIcon(windowPtr);
+			drawWindow(windowPtr);
 			EndUpdate(windowPtr);
 			break;
 	}
 }
 
-void doKeyDown(EventRecord *eventPtr) {
+void doKeyDown(EventRecord *eventPtr)
+{
 	char key;
 
-	if (eventPtr->modifiers & cmdKey) {
-		if (eventPtr->what == keyDown) {
+	if (eventPtr->modifiers & cmdKey)
+	{
+		if (eventPtr->what == keyDown)
+		{
 			adjustMenuItems();
         	key = (char)(eventPtr->message & charCodeMask);
 			doMenuCommand(MenuKey(key));
 		}	
-	} else {
+	}
+	else
+	{
 		handleKeyDown(FrontWindow(), eventPtr);
 	}
 }
 
-void doMouseDown(EventRecord *eventPtr) {
+void doMouseDown(EventRecord *eventPtr)
+{
 	short part;
 	WindowPtr windowPtr;
 
 	part = FindWindow(eventPtr->where, &windowPtr);
-	switch (part) {
+	switch (part)
+	{
 		case inMenuBar:
 			adjustMenuItems();
 			doMenuCommand(MenuSelect(eventPtr->where));
@@ -437,9 +522,12 @@ void doMouseDown(EventRecord *eventPtr) {
 			SystemClick(eventPtr, windowPtr);
 			break;
 		case inContent:
-			if (windowPtr == FrontWindow()) {
+			if (windowPtr == FrontWindow())
+			{
 				doContentClick(windowPtr, eventPtr);
-			} else {
+			}
+			else
+			{
 				SelectWindow(windowPtr);
 			}
 			break;
@@ -450,21 +538,25 @@ void doMouseDown(EventRecord *eventPtr) {
 			doGrowWindow(windowPtr, eventPtr);
 			break;
 		case inGoAway:
-			if (TrackGoAway(windowPtr, eventPtr->where)) {
+			if (TrackGoAway(windowPtr, eventPtr->where))
+			{
 				doCloseCmd(windowPtr);
 			}
 			break;
 		case inZoomIn:
 		case inZoomOut:
-			if (TrackBox(windowPtr, eventPtr->where, part)) {
+			if (TrackBox(windowPtr, eventPtr->where, part))
+			{
 				doZoomWindow(windowPtr, part);
 			}
 			break;
 	}
 }
 
-void doEvent(EventRecord *eventPtr) {
-	switch (eventPtr->what) {
+void doEvent(EventRecord *eventPtr)
+{
+	switch (eventPtr->what)
+	{
 		case mouseDown:
 			doMouseDown(eventPtr);
 			break;
@@ -490,20 +582,26 @@ void doEvent(EventRecord *eventPtr) {
 	}
 }
 
-void doEventLoop(void) {
+void doEventLoop(void)
+{
 	Boolean gotEvent;
 	EventRecord event;
 	RgnHandle cursorRgn = nil;
 
-	while (!gDone) {
-		if (gMenubarDirty) {
+	while (!gDone)
+	{
+		if (gMenubarDirty)
+		{
 			DrawMenuBar();
 			gMenubarDirty = false;
 		}
 		gotEvent = WaitNextEvent(everyEvent, &event, kSleepTime, cursorRgn);
-		if (gotEvent) {
+		if (gotEvent)
+		{
 			doEvent(&event);
-		} else {
+		}
+		else
+		{
 			doIdle(&event);
 		}
 	}
@@ -525,7 +623,7 @@ void initToolbox(void)
 {
     MaxApplZone();
     // TODO: figure out how many masters we need
-    thisManyMoreMasters(64);
+    //thisManyMoreMasters(64);
     InitGraf(&qd.thePort);
     InitFonts();
     InitWindows();

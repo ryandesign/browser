@@ -1,4 +1,5 @@
-enum {
+enum
+{
 	kNoWindow,
 	kDocumentWindow,
 	kDAWindow

@@ -19,7 +19,7 @@ resource 'MENU' (mApple) {
 	enabled,
 	apple,
 	{
-		"About " kProjectName "...", noIcon, noKey, noMark, plain;
+		"About " kProjectName "É", noIcon, noKey, noMark, plain;
 		"-", noIcon, noKey, noMark, plain
 	}
 };
@@ -55,12 +55,33 @@ resource 'MENU' (mEdit) {
 	}
 };
 
+resource 'SIZE' (rSize, purgeable)  {
+	reserved,
+	acceptSuspendResumeEvents,
+	reserved,
+	cannotBackground,
+	doesActivateOnFGSwitch,
+	backgroundAndForeground,
+	dontGetFrontClicks,
+	ignoreAppDiedEvents,
+	is32BitCompatible,
+	notHighLevelEventAware,
+	onlyLocalHLEvents,
+	notStationeryAware,
+	dontUseTextEditServices,
+	notDisplayManagerAware,
+	reserved,
+	reserved,
+	kPreferredSize * 1024,
+	kMinimumSize * 1024
+};
+
 resource 'WIND' (rWindow) {
 	{40, 40, 200, 200},
-	documentProc,
+	zoomDocProc,
 	invisible,
 	goAway,
 	0x0,
-	kProjectName,
+	"",
 	noAutoCenter
 };

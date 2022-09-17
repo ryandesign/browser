@@ -5,6 +5,7 @@ add_application(app
     hellolite.c
     hellolite.r
     quickdraw_container.cpp
+    quickdraw_font.cpp
     TYPE "APPL"
     CREATOR "????"
 )
