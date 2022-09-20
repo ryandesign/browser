@@ -25,7 +25,6 @@
 Boolean gDone = false;
 Boolean gInBackground = false;
 Boolean gMenubarDirty = true;
-//SysEnvRec gEnv;
 
 // Defines
 #define kMoveToFront (WindowPtr)-1L
@@ -644,12 +643,6 @@ static void init_app(void)
 	MenuHandle menu;
 	OSErr err = noErr;
 	long result;
-
-//	SysEnvirons(kSysEnvironsVersion, &gEnv);
-//    if (!gEnv.hasColorQD)
-//        fatal_error(eNoColorQuickDraw);
-//	if (gEnv.systemVersion < 0x0700)
-;//	    fatal_error(eOldSystem);
 
     if (trap_available(_Gestalt))
     	err = Gestalt(gestaltAppearanceAttr, &result);

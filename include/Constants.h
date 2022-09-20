@@ -14,5 +14,3 @@ enum
 
 #define kMinDocHeight kMinDocWidth
 #define kMaxDocHeight kMaxDocWidth
-
-#define kSysEnvironsVersion 1

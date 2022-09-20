@@ -105,8 +105,6 @@ resource 'SIZE' (rSize, purgeable)  {
 
 resource 'STR#' (rFatalErrorStrings, purgeable) {
 	{
-		"The application cannot start because this Macintosh does not support color QuickDraw.",
-		"The application cannot start because it requires System 7 or later.",
 		"The application cannot start because the Appearance extension is not installed.",
 		"The application cannot start because a required application resource is missing."
 	}
