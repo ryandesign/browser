@@ -1,3 +1,11 @@
+#define rFatalErrorAlert 128
+
+#define rFatalErrorStrings 128
+#define eNoColorQuickDraw 1
+#define eOldSystem 2
+#define eNoAppearance 3
+#define eMissingResource 4
+
 #define rMenuBar 128
 
 #define mApple 128

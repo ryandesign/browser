@@ -1,12 +1,15 @@
 // Mac headers
+#include <Appearance.h>
 #include <Devices.h>
 #include <Dialogs.h>
 #include <DiskInit.h>
 #include <Fonts.h>
+#include <Gestalt.h>
 #include <LowMem.h>
 #include <Quickdraw.h>
 #include <TextEdit.h>
 #include <ToolUtils.h>
+#include <Traps.h>
 #include <Windows.h>
 
 // System headers
@@ -22,6 +25,7 @@
 Boolean gDone = false;
 Boolean gInBackground = false;
 Boolean gMenubarDirty = true;
+//SysEnvRec gEnv;
 
 // Defines
 #define kMoveToFront (WindowPtr)-1L
@@ -148,11 +152,7 @@ short getWindowType(WindowPtr windowPtr)
 {
 	short windowKind, windowType;
 
-	if (windowPtr == NULL)
-    {
-		windowType = kNoWindow;
-	}
-	else
+	if (windowPtr)
     {
 		windowKind = ((WindowPeek)windowPtr)->windowKind;
 		if (windowKind == userKind)
@@ -167,6 +167,10 @@ short getWindowType(WindowPtr windowPtr)
         {
 			windowType = GetWRefCon(windowPtr);
 		}
+	}
+	else
+    {
+		windowType = kNoWindow;
 	}
 
 	return windowType;
@@ -188,22 +192,22 @@ void handleKeyDown(WindowPtr windowPtr, EventRecord *eventPtr)
 	}
 }
 
-void setItemEnabled(MenuHandle menuHandle, short menuItem, Boolean enabled)
+void setItemEnabled(MenuHandle menu, short menuItem, Boolean enabled)
 {
-	if (menuHandle != NULL)
+	if (menu)
 	{
-		if (menuItem == 0 && enabled != (**menuHandle).enableFlags & 1L)
+		if (menuItem == 0 && enabled != (**menu).enableFlags & 1L)
 		{
 			gMenubarDirty = true;
 		}
 
 		if (enabled)
 		{
-			EnableItem(menuHandle, menuItem);
+			EnableItem(menu, menuItem);
 		}
 		else
 		{
-			DisableItem(menuHandle, menuItem);
+			DisableItem(menu, menuItem);
 		}
 	}
 }
@@ -212,26 +216,26 @@ void adjustMenuItems(void)
 {
 	WindowPtr frontWindowPtr;
 	short frontWindowType;
-	MenuHandle menuHandle;
+	MenuHandle menu;
 
 	frontWindowPtr = FrontWindow();
 	frontWindowType = getWindowType(frontWindowPtr);
 
-	menuHandle = GetMenuHandle(mFile);
-	setItemEnabled(menuHandle, iClose, frontWindowType != kNoWindow);
+	menu = GetMenuHandle(mFile);
+	setItemEnabled(menu, iClose, frontWindowType != kNoWindow);
 }
 
 void adjustMenus(void)
 {
 	WindowPtr frontWindowPtr;
 	short frontWindowType;
-	MenuHandle menuHandle;
+	MenuHandle menu;
 
 	frontWindowPtr = FrontWindow();
 	frontWindowType = getWindowType(frontWindowPtr);
 
-	menuHandle = GetMenuHandle(mEdit);
-	setItemEnabled(menuHandle, 0, frontWindowType == kDAWindow);
+	menu = GetMenuHandle(mEdit);
+	setItemEnabled(menu, 0, frontWindowType == kDAWindow);
 }
 
 void doZoomCmd(WindowPtr windowPtr)
@@ -348,7 +352,7 @@ void handleFileCommand(short menuItem)
 
 void handleAppleCommand(short menuItem)
 {
-	MenuHandle menuHandle;
+	MenuHandle menu;
 	short daRefNum;
 	Str255 itemName;
 
@@ -358,10 +362,10 @@ void handleAppleCommand(short menuItem)
 			doAboutCmd();
 			break;
 		default:
-			menuHandle = GetMenuHandle(mApple);
-			if (menuHandle != NULL)
+			menu = GetMenuHandle(mApple);
+			if (menu)
 			{
-				GetMenuItemText(menuHandle, menuItem, itemName);
+				GetMenuItemText(menu, menuItem, itemName);
 				daRefNum = OpenDeskAcc(itemName);
 				adjustMenus();
 			}
@@ -390,30 +394,6 @@ void doMenuCommand(long menuResult)
 	}
 	while (TickCount() - ticks < 8) {}
 	HiliteMenu(0);
-}
-
-void setUpMenus(void)
-{
-	Handle menuBarHandle;
-	MenuHandle menuHandle;
-
-	menuBarHandle = GetNewMBar(rMenuBar);
-	if (menuBarHandle == NULL)
-	{
-		return;
-	}
-
-	SetMenuBar(menuBarHandle);
-	DisposeHandle(menuBarHandle);
-
-	menuHandle = GetMenuHandle(mApple);
-	if (menuHandle != NULL)
-	{
-		AppendResMenu(menuHandle, 'DRVR');
-	}
-
-	adjustMenus();
-	adjustMenuItems();
 }
 
 void doActivate(WindowPtr windowPtr, Boolean activate, EventRecord *eventPtr)
@@ -607,23 +587,103 @@ void doEventLoop(void)
 	}
 }
 
-void thisManyMoreMasters(short numMasters)
+void this_many_more_masters(short num_masters)
 {
     THz zone;
-    short savedNumMasters;
+    short saved_num_masters;
 
     zone = GetZone();
-    savedNumMasters = zone->moreMast;
-    zone->moreMast = numMasters;
+    saved_num_masters = zone->moreMast;
+    zone->moreMast = num_masters;
     MoreMasters();
-    zone->moreMast = savedNumMasters;
+    zone->moreMast = saved_num_masters;
 }
 
-void initToolbox(void)
+void fatal_error(short error_number)
 {
+    short item_hit;
+    Str255 error_message;
+
+    SetCursor(&qd.arrow);
+    GetIndString(error_message, rFatalErrorStrings, error_number);
+    ParamText(error_message, "\p", "\p", "\p");
+    item_hit = StopAlert(rFatalErrorAlert, nil);
+    ExitToShell();
+}
+
+static int num_toolbox_traps()
+{
+	if (NGetTrapAddress(_InitGraf, ToolTrap) == NGetTrapAddress(0xAA6E, ToolTrap))
+		return 0x200;
+	return 0x400;
+}
+
+static TrapType get_trap_type(short trap)
+{
+	if (trap & 0x0800)
+	    return ToolTrap;
+	return OSTrap;
+}
+
+static Boolean trap_available(short trap)
+{
+	TrapType trap_type;
+
+	trap_type = get_trap_type(trap);
+	if (ToolTrap == trap_type) {
+		trap &= 0x03FF;
+		if (trap >= num_toolbox_traps())
+			trap = _Unimplemented;
+	}
+	return NGetTrapAddress(trap, trap_type) != NGetTrapAddress(_Unimplemented, ToolTrap);
+}
+
+static void init_app(void)
+{
+	Handle menuBar;
+	MenuHandle menu;
+	OSErr err = noErr;
+	long result;
+
+//	SysEnvirons(kSysEnvironsVersion, &gEnv);
+//    if (!gEnv.hasColorQD)
+//        fatal_error(eNoColorQuickDraw);
+//	if (gEnv.systemVersion < 0x0700)
+;//	    fatal_error(eOldSystem);
+
+    if (trap_available(_Gestalt))
+    	err = Gestalt(gestaltAppearanceAttr, &result);
+    else
+        err = unimpErr;
+	if (err)
+		fatal_error(eNoAppearance);
+	RegisterAppearanceClient();
+
+	menuBar = GetNewMBar(rMenuBar);
+	if (!menuBar)
+        fatal_error(eMissingResource);
+	SetMenuBar(menuBar);
+	DisposeHandle(menuBar);
+
+	menu = GetMenuHandle(mApple);
+	if (!menu)
+        fatal_error(eMissingResource);
+	AppendResMenu(menu, 'DRVR');
+
+    GetDateTime(&qd.randSeed);
+
+	adjustMenus();
+	adjustMenuItems();
+}
+
+static void init_toolbox(void)
+{
+    // Some of the below functions allocate non-relocatable memory so
+    // we're not supposed to unload the segment containing this function
+    // since that would fragment memory.
     MaxApplZone();
     // TODO: figure out how many masters we need
-    //thisManyMoreMasters(64);
+    //this_many_more_masters(64);
     InitGraf(&qd.thePort);
     InitFonts();
     InitWindows();
@@ -632,14 +692,15 @@ void initToolbox(void)
     InitDialogs(nil);
     FlushEvents(everyEvent, 0);
     InitCursor();
-    GetDateTime(&qd.randSeed);
 }
 
 void main(void)
 {
-    initToolbox();
-    setUpMenus();
+    init_toolbox();
+    init_app();
+#ifdef powerc
     doNewCmd(true);
+#endif
     doEventLoop();
     ExitToShell();
 }

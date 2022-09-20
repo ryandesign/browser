@@ -4,6 +4,33 @@
 
 #define kProjectName "hellolite"
 
+resource 'ALRT' (rFatalErrorAlert, purgeable) {
+	{84, 64, 198, 448},
+	rFatalErrorAlert,
+	{
+		OK, visible, sound1,
+		OK, visible, sound1,
+		OK, visible, sound1,
+		OK, visible, sound1
+	},
+	alertPositionMainScreen
+};
+
+resource 'DITL' (rFatalErrorAlert, purgeable) {
+	{
+		{84, 316, 104, 374},
+		Button {
+			enabled,
+			"OK"
+		},
+		{10, 72, 74, 374},
+		StaticText {
+			disabled,
+			"^0^1^2^3"
+		}
+	}
+};
+
 resource 'MBAR' (rMenuBar) {
 	{
 		mApple;
@@ -14,7 +41,7 @@ resource 'MBAR' (rMenuBar) {
 
 resource 'MENU' (mApple) {
 	mApple,
-	textMenuProc,
+	kMenuStdMenuProc,
 	0b1111111111111111111111111111101,
 	enabled,
 	apple,
@@ -26,7 +53,7 @@ resource 'MENU' (mApple) {
 
 resource 'MENU' (mFile) {
 	mFile,
-	textMenuProc,
+	kMenuStdMenuProc,
 	0b1111111111111111111111111111011,
 	enabled,
 	"File",
@@ -40,7 +67,7 @@ resource 'MENU' (mFile) {
 
 resource 'MENU' (mEdit) {
 	mEdit,
-	textMenuProc,
+	kMenuStdMenuProc,
 	0b1111111111111111111111111111101,
 	enabled,
 	"Edit",
@@ -74,6 +101,15 @@ resource 'SIZE' (rSize, purgeable)  {
 	reserved,
 	kPreferredSize * 1024,
 	kMinimumSize * 1024
+};
+
+resource 'STR#' (rFatalErrorStrings, purgeable) {
+	{
+		"The application cannot start because this Macintosh does not support color QuickDraw.",
+		"The application cannot start because it requires System 7 or later.",
+		"The application cannot start because the Appearance extension is not installed.",
+		"The application cannot start because a required application resource is missing."
+	}
 };
 
 resource 'WIND' (rWindow) {
