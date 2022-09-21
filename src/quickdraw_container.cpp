@@ -30,6 +30,8 @@ litehtml::uint_ptr quickdraw_container::create_font(const litehtml::tchar_t *fac
     {
         style |= italic;
     }
+    if (decoration & litehtml::font_decoration_underline)
+        style |= underline;
     quickdraw_font *font = new quickdraw_font(faceName, size, style);
     FontInfo& metrics = font->metrics();
     fm->height = metrics.ascent + metrics.descent + metrics.leading;
