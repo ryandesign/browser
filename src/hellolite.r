@@ -110,7 +110,7 @@ resource 'STR#' (rFatalErrorStrings, purgeable) {
 	}
 };
 
-resource 'WIND' (rWindow) {
+resource 'WIND' (rWindow, purgeable) {
 	{40, 40, 200, 200},
 	zoomDocProc,
 	invisible,
