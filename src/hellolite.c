@@ -459,7 +459,6 @@ void doUpdate(WindowPtr windowPtr)
 	{
 		case kDocumentWindow:
 			BeginUpdate(windowPtr);
-			DrawGrowIcon(windowPtr);
 			drawWindow(windowPtr);
 			EndUpdate(windowPtr);
 			break;

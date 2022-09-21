@@ -112,7 +112,7 @@ resource 'STR#' (rFatalErrorStrings, purgeable) {
 
 resource 'WIND' (rWindow, purgeable) {
 	{40, 40, 200, 200},
-	zoomDocProc,
+	kWindowFullZoomGrowDocumentProc,
 	invisible,
 	goAway,
 	0x0,
