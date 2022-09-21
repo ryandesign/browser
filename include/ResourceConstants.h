@@ -27,4 +27,7 @@
 #define kPreferredSize 6144
 #define kMinimumSize 2048
 
+#define tCSS 'TEXT'
+#define rCSS 128
+
 #define rWindow 128

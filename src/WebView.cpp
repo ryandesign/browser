@@ -1,6 +1,7 @@
 // Mac headers
 #include <Memory.h>
 #include <Quickdraw.h>
+#include <Resources.h>
 #include <Windows.h>
 //#include <TextUtils.h>
 
@@ -101,27 +102,36 @@ void WebView::draw()
     }
 }
 
-static const char g_masterCss[] =
+static bool s_initialized = false;
+static litehtml::context s_context;
+
+void InitWebViews(FourCharCode css_rsrc_type, short css_rsrc_id)
 {
-#include "master.css.inc"
-};
+    if (!s_initialized)
+    {
+        Handle css = GetResource(css_rsrc_type, css_rsrc_id);
+        if (css)
+        {
+            short saved_state = HGetState(css);
+            HLock(css);
+            s_context.load_master_stylesheet(*css);
+            HSetState(css, saved_state);
+            s_initialized = true;
+        }
+    }
+}
 
 WebViewRef NewWebView(WindowPtr window)
 {
-    static litehtml::context s_liteContext;
-    static bool s_liteContextInitialized = false;
     WebView *webView;
 //    Ptr htmlP;
 //    Size htmlPSize;
 
-    if (!s_liteContextInitialized)
-    {
-        s_liteContext.load_master_stylesheet(g_masterCss);
-        s_liteContextInitialized = true;
-    }
+    if (!s_initialized)
+        return nil;
 
     // TODO: wrap in try?
-    webView = new WebView(&s_liteContext, window);
+    webView = new WebView(&s_context, window);
     /*;
 
     if (webViewPtr) {

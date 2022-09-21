@@ -664,6 +664,7 @@ static void init_app(void)
 	AppendResMenu(menu, 'DRVR');
 
     GetDateTime(&qd.randSeed);
+    InitWebViews(tCSS, rCSS);
 
 	adjustMenus();
 	adjustMenuItems();
