@@ -637,6 +637,11 @@ static Boolean trap_available(short trap)
 	return NGetTrapAddress(trap, trap_type) != NGetTrapAddress(_Unimplemented, ToolTrap);
 }
 
+static Boolean have_64k_rom(void)
+{
+    return LMGetROM85() < 0;
+}
+
 static void init_app(void)
 {
 	Handle menuBar;
@@ -645,7 +650,7 @@ static void init_app(void)
 	long result;
 
 #ifdef __m68k__
-    if (!trap_available(_Gestalt))
+    if (have_64k_rom() || !trap_available(_Gestalt))
         err = unimpErr;
     else
 #endif
