@@ -86,7 +86,7 @@ resource 'SIZE' (rSize, purgeable)  {
 	reserved,
 	acceptSuspendResumeEvents,
 	reserved,
-	cannotBackground,
+	canBackground,
 	doesActivateOnFGSwitch,
 	backgroundAndForeground,
 	dontGetFrontClicks,
