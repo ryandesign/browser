@@ -641,13 +641,15 @@ static void init_app(void)
 {
 	Handle menuBar;
 	MenuHandle menu;
-	OSErr err = noErr;
+	OSErr err;
 	long result;
 
-    if (trap_available(_Gestalt))
-    	err = Gestalt(gestaltAppearanceAttr, &result);
-    else
+#ifdef __m68k__
+    if (!trap_available(_Gestalt))
         err = unimpErr;
+    else
+#endif
+    	err = Gestalt(gestaltAppearanceAttr, &result);
 	if (err)
 		fatal_error(eNoAppearance);
 	RegisterAppearanceClient();
