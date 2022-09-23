@@ -36,13 +36,17 @@ Boolean gMenubarDirty = true;
 void drawWindow(WindowPtr window)
 {
 	GrafPtr savedPort;
+#if USE_LITEHTML
     WebViewRef webView = (WebViewRef)GetWRefCon(window);
+#endif
 
 	GetPort(&savedPort);
 	SetPort(window);
 	// TODO: don't erase?
 	EraseRgn(window->visRgn);
+#if USE_LITEHTML
     DrawWebView(webView);
+#endif
 	SetPort(savedPort);
 }
 
@@ -60,11 +64,13 @@ void fixWindowAfterResize(WindowPtr windowPtr)
 
 void setViewRects(WindowPtr window)
 {
+#ifdef USE_LITEHTML
     WebViewRef webView = (WebViewRef)GetWRefCon(window);
     Rect rect;
 
     SetRect(&rect, 0, 0, RectWidth(window->portRect) - kScrollBarWidth, RectHeight(window->portRect) - kScrollBarWidth);
     SetWebViewRect(webView, &rect);
+#endif
 }
 
 void invalidateScrollBarArea(WindowPtr windowPtr)
@@ -140,10 +146,12 @@ void doZoomWindow(WindowPtr windowPtr, short zoomInOrOut)
 
 void closeDocumentWindow(WindowPtr windowPtr)
 {
+#ifdef USE_LITEHTML
 	WebViewRef webViewRef;
 
 	webViewRef = (WebViewRef)GetWRefCon(windowPtr);
 	DisposeWebView(webViewRef);
+#endif
 	DisposeWindow(windowPtr);
 }
 
@@ -285,40 +293,49 @@ void doNewCmd(Boolean showWindow)
     Rect strucRect, contRect, windRect;
     WindowPtr windowP;
     WebViewRef webViewRef;
+    Boolean ok = true;
     char *html = "<html><head><title>Hello World</title></head><body><p>The quick brown fox jumps over the lazy dog.</p></body></html>";
+
     windowP = GetNewWindow(rWindow, NULL, kMoveToFront);
-    if (windowP)
+    if (!windowP)
+        ok = false;
+
+#ifdef USE_LITEHTML
+    if (ok)
     {
         webViewRef = NewWebView(windowP);
         if (webViewRef)
         {
             SetWebViewHTML(webViewRef, html);
             SetWRefCon(windowP, (long)webViewRef);
-            // Make the window visible but offscreen so that its structure and
-            // content regions get initialized.
-            MoveWindow(windowP, -32000, -32000, false);
-            ShowWindow(windowP);
-            strucRect = (**((WindowPeek)windowP)->strucRgn).rgnBBox;
-            contRect = (**((WindowPeek)windowP)->contRgn).rgnBBox;
-            windRect = qd.screenBits.bounds;
-            windRect.left += kWindowInset + (contRect.left - strucRect.left);
-            windRect.top += kWindowInset + (contRect.top - strucRect.top)
-                + LMGetMBarHeight();
-            windRect.right -= kWindowInset - (contRect.right - strucRect.right);
-            windRect.bottom -= kWindowInset - (contRect.bottom - strucRect.bottom);
-            if (!showWindow)
-            {
-                HideWindow(windowP);
-            }
-            SizeWindow(windowP, RectWidth(windRect), RectHeight(windRect), true);
-            MoveWindow(windowP, windRect.left, windRect.top, true);
-            setViewRects(windowP);
-            adjustMenus();
         }
         else
-        {
+            ok = false;
+    }
+#endif
+
+    if (ok) {
+        // Make the window visible but offscreen so that its structure and
+        // content regions get initialized.
+        MoveWindow(windowP, -32000, -32000, false);
+        ShowWindow(windowP);
+        strucRect = (**((WindowPeek)windowP)->strucRgn).rgnBBox;
+        contRect = (**((WindowPeek)windowP)->contRgn).rgnBBox;
+        windRect = qd.screenBits.bounds;
+        windRect.left += kWindowInset + (contRect.left - strucRect.left);
+        windRect.top += kWindowInset + (contRect.top - strucRect.top)
+            + LMGetMBarHeight();
+        windRect.right -= kWindowInset - (contRect.right - strucRect.right);
+        windRect.bottom -= kWindowInset - (contRect.bottom - strucRect.bottom);
+        if (!showWindow)
+            HideWindow(windowP);
+        SizeWindow(windowP, RectWidth(windRect), RectHeight(windRect), true);
+        MoveWindow(windowP, windRect.left, windRect.top, true);
+        setViewRects(windowP);
+        adjustMenus();
+    } else {
+        if (windowP)
             DisposeWindow(windowP);
-        }
     }
 }
 
@@ -670,7 +687,9 @@ static void init_app(void)
 	AppendResMenu(menu, 'DRVR');
 
     GetDateTime(&qd.randSeed);
+#ifdef USE_LITEHTML
     InitWebViews(tCSS, rCSS);
+#endif
 
 	adjustMenus();
 	adjustMenuItems();
@@ -698,9 +717,7 @@ void main(void)
 {
     init_toolbox();
     init_app();
-#ifdef powerc
     doNewCmd(true);
-#endif
     doEventLoop();
     ExitToShell();
 }
