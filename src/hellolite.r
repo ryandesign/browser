@@ -26,7 +26,7 @@ resource 'DITL' (rFatalErrorAlert, purgeable) {
 		{10, 72, 74, 374},
 		StaticText {
 			disabled,
-			"^0^1^2^3"
+			"^0"
 		}
 	}
 };
