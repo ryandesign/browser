@@ -296,7 +296,7 @@ void doNewCmd(Boolean showWindow)
     Boolean ok = true;
     char *html = "<html><head><title>Hello World</title></head><body><p>The quick brown fox jumps over the lazy dog.</p></body></html>";
 
-    windowP = GetNewWindow(rWindow, NULL, kMoveToFront);
+    windowP = GetNewCWindow(rWindow, NULL, kMoveToFront);
     if (!windowP)
         ok = false;
 
