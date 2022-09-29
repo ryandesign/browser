@@ -614,15 +614,36 @@ void this_many_more_masters(short num_masters)
     zone->moreMast = saved_num_masters;
 }
 
-void fatal_error(short error_number)
+static void fatal_error(short error_number, Boolean has_autopositioning)
 {
     short item_hit;
     Str255 error_message;
+
+#ifdef __m68k__
+    AlertTHndl alrt;
+    Point offset;
+    if (!has_autopositioning)
+    {
+        alrt = (AlertTHndl)GetResource('ALRT', rFatalErrorAlert);
+        if (alrt)
+        {
+            offset.h = (RectWidth(qd.screenBits.bounds) - RectWidth((**alrt).boundsRect) >> 1) - (**alrt).boundsRect.left;
+            offset.v = LMGetMBarHeight() + 64 - (**alrt).boundsRect.top;
+            OffsetRect(&(**alrt).boundsRect, offset.h, offset.v);
+        }
+    }
+#endif
 
     SetCursor(&qd.arrow);
     GetIndString(error_message, rFatalErrorStrings, error_number);
     ParamText(error_message, "\p", "\p", "\p");
     item_hit = StopAlert(rFatalErrorAlert, nil);
+
+#ifdef __m68k__
+    if (!has_autopositioning && alrt)
+        OffsetRect(&(**alrt).boundsRect, -offset.h, -offset.v);
+#endif
+
     ExitToShell();
 }
 
@@ -653,9 +674,9 @@ static Boolean trap_available(short trap)
 	return NGetTrapAddress(trap, trap_type) != NGetTrapAddress(_Unimplemented, ToolTrap);
 }
 
-static Boolean have_64k_rom(void)
+static Boolean has_128k_rom(void)
 {
-    return LMGetROM85() < 0;
+    return LMGetROM85() >= 0;
 }
 
 static void init_app(void)
@@ -664,26 +685,37 @@ static void init_app(void)
 	MenuHandle menu;
 	OSErr err;
 	long result;
+    Boolean has_autopositioning;
 
-#ifdef __m68k__
-    if (have_64k_rom() || !trap_available(_Gestalt))
-        err = unimpErr;
+#ifndef __m68k__
+    has_autopositioning = true;
+#else
+    if (has_128k_rom() && trap_available(_Gestalt))
+        err = Gestalt(gestaltSystemVersion, &result);
     else
+        err = unimpErr;
+
+    if (err)
+        has_autopositioning = false;
+    else
+        has_autopositioning = LoWord(result) >= 0x0700;
+
+    if (!err)
 #endif
     	err = Gestalt(gestaltAppearanceAttr, &result);
 	if (err)
-		fatal_error(eNoAppearance);
+        fatal_error(eNoAppearance, has_autopositioning);
 	RegisterAppearanceClient();
 
 	menuBar = GetNewMBar(rMenuBar);
 	if (!menuBar)
-        fatal_error(eMissingResource);
+        fatal_error(eMissingResource, has_autopositioning);
 	SetMenuBar(menuBar);
 	DisposeHandle(menuBar);
 
 	menu = GetMenuHandle(mApple);
 	if (!menu)
-        fatal_error(eMissingResource);
+        fatal_error(eMissingResource, has_autopositioning);
 	AppendResMenu(menu, 'DRVR');
 
     GetDateTime(&qd.randSeed);

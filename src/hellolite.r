@@ -4,7 +4,7 @@
 
 #define kProjectName "hellolite"
 
-resource 'ALRT' (rFatalErrorAlert, purgeable) {
+resource 'ALRT' (rFatalErrorAlert) {
 	{84, 64, 198, 448},
 	rFatalErrorAlert,
 	{
@@ -16,7 +16,7 @@ resource 'ALRT' (rFatalErrorAlert, purgeable) {
 	alertPositionMainScreen
 };
 
-resource 'DITL' (rFatalErrorAlert, purgeable) {
+resource 'DITL' (rFatalErrorAlert) {
 	{
 		{84, 316, 104, 374},
 		Button {
