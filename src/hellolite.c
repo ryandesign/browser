@@ -622,6 +622,11 @@ void this_many_more_masters(short num_masters)
     zone->moreMast = saved_num_masters;
 }
 
+static void expand_stack(long extra_bytes)
+{
+    SetApplLimit(GetApplLimit() - extra_bytes);
+}
+
 static void fatal_error(short error_number, Boolean has_autopositioning)
 {
     short item_hit;
@@ -737,6 +742,8 @@ static void init_app(void)
 
 static void init_toolbox(void)
 {
+    // TODO: Expand stack here if needed.
+    //expand_stack(32 * 1024);
     // Some of the below functions allocate non-relocatable memory so
     // we're not supposed to unload the segment containing this function
     // since that would fragment memory.
