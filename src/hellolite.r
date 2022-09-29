@@ -105,8 +105,8 @@ resource 'SIZE' (rSize, purgeable)  {
 
 resource 'STR#' (rFatalErrorStrings, purgeable) {
 	{
-		"The application cannot start because the Appearance extension is not installed.",
-		"The application cannot start because a required application resource is missing."
+		kProjectName " cannot start because the Appearance Extension is not installed.",
+		kProjectName " cannot start because a required application resource is missing."
 	}
 };
 
