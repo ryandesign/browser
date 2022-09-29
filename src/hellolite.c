@@ -33,6 +33,14 @@ Boolean gMenubarDirty = true;
 #define RectWidth(rect) ((rect).right - (rect).left)
 #define RectHeight(rect) ((rect).bottom - (rect).top)
 
+void delay_until(unsigned long ticks)
+{
+    EventRecord event;
+
+    while (TickCount() < ticks)
+        EventAvail(kNoEvents, &event);
+}
+
 void drawWindow(WindowPtr window)
 {
 	GrafPtr savedPort;
@@ -408,7 +416,7 @@ void doMenuCommand(long menuResult)
 			handleEditCommand(menuItem);
 			break;
 	}
-	while (TickCount() - ticks < 8) {}
+    delay_until(ticks + kVisualDelay);
 	HiliteMenu(0);
 }
 
