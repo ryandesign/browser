@@ -492,15 +492,12 @@ void doUpdate(WindowPtr windowPtr)
 
 void doKeyDown(EventRecord *eventPtr)
 {
-	char key;
-
 	if (eventPtr->modifiers & cmdKey)
 	{
 		if (eventPtr->what == keyDown)
 		{
 			adjustMenuItems();
-        	key = (char)(eventPtr->message & charCodeMask);
-			doMenuCommand(MenuKey(key));
+            doMenuCommand(MenuEvent(eventPtr));
 		}	
 	}
 	else
