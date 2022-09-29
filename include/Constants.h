@@ -13,6 +13,8 @@ enum
 
 #define kNoEvents 0
 
+#define kMoveToFront (WindowPtr)-1L
+
 #define kMinDocWidth 128
 #define kMaxDocWidth 0x7fff
 

@@ -27,7 +27,6 @@ Boolean gInBackground = false;
 Boolean gMenubarDirty = true;
 
 // Defines
-#define kMoveToFront (WindowPtr)-1L
 #define kScrollBarWidth 15
 #define kWindowInset 2
 #define RectWidth(rect) ((rect).right - (rect).left)
