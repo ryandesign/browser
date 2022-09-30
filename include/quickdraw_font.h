@@ -1,3 +1,6 @@
+#ifndef QUICKDRAW_FONT_H
+#define QUICKDRAW_FONT_H
+
 // Mac headers
 #include <Fonts.h>
 #include <Types.h>
@@ -28,3 +31,5 @@ class quickdraw_font
         void construct();
         void setUpPort();
 };
+
+#endif
