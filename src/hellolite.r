@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: Â© 2022 Ryan C Schmidt <https://github.com/ryandesign>
+//
+// SPDX-License-Identifier: MIT
+
 #include "Types.r"
 
 #include "ResourceConstants.h"
@@ -46,7 +50,7 @@ resource 'MENU' (mApple) {
 	enabled,
 	apple,
 	{
-		"About " kProjectName "É", noIcon, noKey, noMark, plain;
+		"About " kProjectName "\0xC9", noIcon, noKey, noMark, plain;
 		"-", noIcon, noKey, noMark, plain
 	}
 };

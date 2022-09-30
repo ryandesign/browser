@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: © 2022 Ryan C Schmidt <https://github.com/ryandesign>
+#
+# SPDX-License-Identifier: MIT
+
 set(REZ_INCLUDE_PATH "${hellolite_SOURCE_DIR}/include;${REZ_INCLUDE_PATH}")
 
 set(app_SOURCES

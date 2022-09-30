@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: © 2022 Ryan C Schmidt <https://github.com/ryandesign>
+#
+# SPDX-License-Identifier: MIT
+
 file(READ ${infile} data)
 string(REGEX REPLACE "[ \t]*[\n\r]+[ \t]*" "\r" data "${data}")
 string(HEX "${data}" data)

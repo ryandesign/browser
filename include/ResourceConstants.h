@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: © 2022 Ryan C Schmidt <https://github.com/ryandesign>
+//
+// SPDX-License-Identifier: MIT
+
 #define rFatalErrorAlert 128
 
 #define rFatalErrorStrings 128

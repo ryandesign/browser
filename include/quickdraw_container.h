@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: © 2022 Ryan C Schmidt <https://github.com/ryandesign>
+//
+// SPDX-License-Identifier: MIT
+
 #ifndef QUICKDRAW_CONTAINER_H
 #define QUICKDRAW_CONTAINER_H
 

@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: © 2022 Ryan C Schmidt <https://github.com/ryandesign>
+#
+# SPDX-License-Identifier: MIT
+
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name:
+Upstream-Contact: Ryan C Schmidt <https://github.com/ryandesign>
+Source:

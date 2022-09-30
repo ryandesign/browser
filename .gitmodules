@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: © 2022 Ryan C Schmidt <https://github.com/ryandesign>
+#
+# SPDX-License-Identifier: MIT
+
 [submodule "third_party/litehtml"]
 	path = third_party/litehtml
 	url = https://github.com/litehtml/litehtml.git
