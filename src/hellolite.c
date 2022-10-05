@@ -105,6 +105,7 @@ void invalidateScrollBarArea(WindowPtr windowPtr)
 
 void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr)
 {
+    GrafPtr saved_port;
 	Rect limitRect, savedViewRect;
 	long growSize;
 	RgnHandle localUpdateRgn;
@@ -115,16 +116,19 @@ void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr)
 	growSize = GrowWindow(windowPtr, eventPtr->where, &limitRect);
 	if (growSize != 0)
     {
+        GetPort(&saved_port);
+        SetPort(windowPtr);
 /*
 		documentHandle = (DocumentHandle)GetWRefCon(windowPtr);
 		savedViewRect = (**documentHandle).viewRect;
 		localUpdateRgn = NewRgn();
 		getLocalUpdateRgn(windowPtr, localUpdateRgn);
 */
-		invalidateScrollBarArea(windowPtr);
-		SizeWindow(windowPtr, LoWord(growSize), HiWord(growSize), true);
-		invalidateScrollBarArea(windowPtr);
+//       invalidateScrollBarArea(windowPtr);
+        SizeWindow(windowPtr, LoWord(growSize), HiWord(growSize), false);
+//       invalidateScrollBarArea(windowPtr);
 		setViewRects(windowPtr);
+       InvalRect(&windowPtr->portRect);
 //		fixWindowAfterResize(windowPtr);
 /*
 		result = SectRect(&savedViewRect, &(**documentHandle).viewRect, &savedViewRect);
@@ -132,6 +136,7 @@ void doGrowWindow(WindowPtr windowPtr, EventRecord *eventPtr)
 		InvalRgn(localUpdateRgn);
 		DisposeRgn(localUpdateRgn);
 */
+        SetPort(saved_port);
 	}
 }
 
