@@ -235,7 +235,7 @@ void setItemEnabled(MenuHandle menu, short menuItem, Boolean enabled)
 	}
 }
 
-void adjustMenuItems(void)
+void adjustMenuItems()
 {
 	WindowPtr frontWindowPtr;
 	short frontWindowType;
@@ -248,7 +248,7 @@ void adjustMenuItems(void)
 	setItemEnabled(menu, iClose, frontWindowType != kNoWindow);
 }
 
-void adjustMenus(void)
+void adjustMenus()
 {
 	WindowPtr frontWindowPtr;
 	short frontWindowType;
@@ -292,7 +292,7 @@ void doCloseCmd(WindowPtr windowPtr)
 	adjustMenus();
 }
 
-void doQuitCmd(void)
+void doQuitCmd()
 {
 	WindowPtr frontWindowPtr;
 
@@ -310,7 +310,7 @@ void doNewCmd(Boolean showWindow)
     WindowPtr windowP;
     WebViewRef webViewRef;
     Boolean ok = true;
-    char *html = "<html><head><title>Hello World</title></head><body><p>The quick brown fox jumps over the lazy dog.</p></body></html>";
+    char const * const html = "<html><head><title>Hello World</title></head><body><p>The quick brown fox jumps over the lazy dog.</p></body></html>";
 
     windowP = GetNewCWindow(rWindow, NULL, kMoveToFront);
     if (!windowP)
@@ -590,7 +590,7 @@ void doEvent(EventRecord *eventPtr)
 	}
 }
 
-void doEventLoop(void)
+void doEventLoop()
 {
 	Boolean gotEvent;
 	EventRecord event;
@@ -692,12 +692,12 @@ static Boolean trap_available(short trap)
 	return NGetTrapAddress(trap, trap_type) != NGetTrapAddress(_Unimplemented, ToolTrap);
 }
 
-static Boolean has_128k_rom(void)
+static Boolean has_128k_rom()
 {
     return LMGetROM85() >= 0;
 }
 
-static void init_app(void)
+static void init_app()
 {
 	Handle menuBar;
 	MenuHandle menu;
@@ -736,7 +736,7 @@ static void init_app(void)
         fatal_error(eMissingResource, has_autopositioning);
 	AppendResMenu(menu, 'DRVR');
 
-    GetDateTime(&qd.randSeed);
+    GetDateTime((unsigned long *)&qd.randSeed);
 #ifdef USE_LITEHTML
     InitWebViews(tCSS, rCSS);
 #endif
@@ -745,7 +745,7 @@ static void init_app(void)
 	adjustMenuItems();
 }
 
-static void init_toolbox(void)
+static void init_toolbox()
 {
     // TODO: Expand stack here if needed.
     //expand_stack(32 * 1024);
@@ -765,7 +765,7 @@ static void init_toolbox(void)
     InitCursor();
 }
 
-void main(void)
+int main()
 {
     init_toolbox();
     init_app();
