@@ -8,10 +8,10 @@
 
 #define r_MBAR 128
 
-#define mApple 128
 #define mFile 129
 #define mEdit 130
 
+#define r_MENU_apple 128
 #define iAbout 1
 
 #define iNew 1

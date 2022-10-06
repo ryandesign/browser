@@ -439,7 +439,7 @@ void handleAppleCommand(short menuItem)
 			doAboutCmd();
 			break;
 		default:
-			menu = GetMenuHandle(mApple);
+            menu = GetMenuHandle(r_MENU_apple);
 			if (menu)
 			{
 				GetMenuItemText(menu, menuItem, itemName);
@@ -459,7 +459,7 @@ void doMenuCommand(long menuResult)
 	menuItem = LoWord(menuResult);
 	switch (menuID)
 	{
-		case mApple:
+        case r_MENU_apple:
 			handleAppleCommand(menuItem);
 			break;
 		case mFile:
@@ -786,7 +786,7 @@ static void init_app()
 	SetMenuBar(menuBar);
 	DisposeHandle(menuBar);
 
-	menu = GetMenuHandle(mApple);
+    menu = GetMenuHandle(r_MENU_apple);
 	if (!menu)
         fatal_error_alert(e_no_resource, has_autopositioning);
 	AppendResMenu(menu, 'DRVR');
