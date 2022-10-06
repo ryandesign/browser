@@ -5,7 +5,6 @@
 // Mac headers
 #include <Memory.h>
 #include <Quickdraw.h>
-#include <Resources.h>
 #include <Windows.h>
 //#include <TextUtils.h>
 
@@ -109,19 +108,12 @@ void WebView::draw()
 static bool s_initialized = false;
 static litehtml::context s_context;
 
-void InitWebViews(FourCharCode css_rsrc_type, short css_rsrc_id)
+void init_web_views(char const * const css)
 {
     if (!s_initialized)
     {
-        Handle css = GetResource(css_rsrc_type, css_rsrc_id);
-        if (css)
-        {
-            short saved_state = HGetState(css);
-            HLock(css);
-            s_context.load_master_stylesheet(*css);
-            HSetState(css, saved_state);
-            s_initialized = true;
-        }
+        s_context.load_master_stylesheet(css);
+        s_initialized = true;
     }
 }
 

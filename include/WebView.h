@@ -28,7 +28,7 @@ typedef struct WebViewRecord {
 extern "C" {
 #endif
 
-void InitWebViews(FourCharCode css_rsrc_type, short css_rsrc_id);
+void init_web_views(char const * const css);
 WebViewRef NewWebView(WindowPtr window);
 void SetWebViewRect(WebViewRef webViewRef, const Rect *rect);
 void SetWebViewHTML(WebViewRef webViewRef, const char *html);

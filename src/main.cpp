@@ -12,6 +12,7 @@
 #include <LowMem.h>
 #include <MacTypes.h>
 #include <Quickdraw.h>
+#include <Resources.h>
 #include <TextEdit.h>
 #include <ToolUtils.h>
 #include <Traps.h>
@@ -792,7 +793,15 @@ static void init_app()
 
     GetDateTime((unsigned long *)&qd.randSeed);
 #ifdef USE_LITEHTML
-    InitWebViews(tCSS, rCSS);
+    Handle css = GetResource('TEXT', r_TEXT_css);
+    if (css)
+    {
+        HLock(css);
+        init_web_views(*css);
+        ReleaseResource(css);
+    }
+    else
+        fatal_error_alert(eMissingResource, has_autopositioning);
 #endif
 
 	adjustMenus();
