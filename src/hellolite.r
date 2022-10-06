@@ -35,7 +35,7 @@ resource 'DITL' (r_DITL_fatal_error) {
 	}
 };
 
-resource 'MBAR' (rMenuBar) {
+resource 'MBAR' (r_MBAR) {
 	{
 		mApple;
 		mFile;

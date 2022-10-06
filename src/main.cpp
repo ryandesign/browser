@@ -780,7 +780,7 @@ static void init_app()
         fatal_error_alert(e_no_appearance, has_autopositioning);
 	RegisterAppearanceClient();
 
-	menuBar = GetNewMBar(rMenuBar);
+    menuBar = GetNewMBar(r_MBAR);
 	if (!menuBar)
         fatal_error_alert(e_no_resource, has_autopositioning);
 	SetMenuBar(menuBar);

@@ -6,7 +6,7 @@
 
 #define r_DITL_fatal_error 128
 
-#define rMenuBar 128
+#define r_MBAR 128
 
 #define mApple 128
 #define mFile 129
