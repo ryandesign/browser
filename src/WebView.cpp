@@ -4,8 +4,8 @@
 
 // Mac headers
 #include <Memory.h>
+#include <MacWindows.h>
 #include <Quickdraw.h>
-#include <Windows.h>
 //#include <TextUtils.h>
 
 // System headers

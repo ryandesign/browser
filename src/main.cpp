@@ -11,12 +11,12 @@
 #include <Gestalt.h>
 #include <LowMem.h>
 #include <MacTypes.h>
+#include <MacWindows.h>
 #include <Quickdraw.h>
 #include <Resources.h>
 #include <TextEdit.h>
 #include <ToolUtils.h>
 #include <Traps.h>
-#include <Windows.h>
 
 // System headers
 
