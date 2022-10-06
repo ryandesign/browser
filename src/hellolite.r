@@ -38,7 +38,7 @@ resource 'DITL' (r_DITL_fatal_error) {
 resource 'MBAR' (r_MBAR) {
 	{
 		r_MENU_apple;
-		mFile;
+		r_MENU_file;
 		mEdit
 	}
 };
@@ -55,8 +55,8 @@ resource 'MENU' (r_MENU_apple) {
 	}
 };
 
-resource 'MENU' (mFile) {
-	mFile,
+resource 'MENU' (r_MENU_file) {
+	r_MENU_file,
 	kMenuStdMenuProc,
 	0b1111111111111111111111111111011,
 	enabled,

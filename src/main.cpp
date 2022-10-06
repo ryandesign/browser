@@ -289,7 +289,7 @@ void adjustMenuItems()
 	frontWindowPtr = FrontWindow();
 	frontWindowType = getWindowType(frontWindowPtr);
 
-	menu = GetMenuHandle(mFile);
+    menu = GetMenuHandle(r_MENU_file);
 	setItemEnabled(menu, iClose, frontWindowType != kNoWindow);
 }
 
@@ -462,7 +462,7 @@ void doMenuCommand(long menuResult)
         case r_MENU_apple:
 			handleAppleCommand(menuItem);
 			break;
-		case mFile:
+        case r_MENU_file:
 			handleFileCommand(menuItem);
 			break;
 		case mEdit:

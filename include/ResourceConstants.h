@@ -8,12 +8,12 @@
 
 #define r_MBAR 128
 
-#define mFile 129
 #define mEdit 130
 
 #define r_MENU_apple 128
 #define iAbout 1
 
+#define r_MENU_file 129
 #define iNew 1
 #define iClose 2
 #define iQuit 4
