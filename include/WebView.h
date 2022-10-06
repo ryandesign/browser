@@ -6,7 +6,6 @@
 #define WEBVIEW_H
 
 // Mac headers
-//#include <Types.h>
 
 // System headers
 

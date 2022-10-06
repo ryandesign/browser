@@ -7,7 +7,7 @@
 
 // Mac headers
 #include <Fonts.h>
-#include <Types.h>
+#include <MacTypes.h>
 
 // System headers
 
