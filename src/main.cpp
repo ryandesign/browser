@@ -72,7 +72,7 @@ static void oserr_alert(OSErr err)
     switch(err)
     {
         case memFullErr:
-            error_number = eNoMemory;
+            error_number = e_no_memory;
             break;
         default:
             error_number = eUnknownError;
@@ -661,7 +661,7 @@ void doEventLoop()
         }
         catch (std::bad_alloc const& e)
         {
-            error_alert(eNoMemory);
+            error_alert(e_no_memory);
         }
         catch (...)
         {

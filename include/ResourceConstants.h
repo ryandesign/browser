@@ -4,7 +4,6 @@
 
 #define rFatalErrorAlert 128
 
-#define eNoMemory 3
 #define eUnknownError 4
 
 #define rMenuBar 128
@@ -33,6 +32,7 @@
 #define r_STRx_error_messages 128
 #define e_no_appearance 1
 #define e_no_resource 2
+#define e_no_memory 3
 
 #define r_TEXT_css 128
 
