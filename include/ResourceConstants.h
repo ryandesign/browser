@@ -36,4 +36,4 @@
 
 #define r_TEXT_css 128
 
-#define rWindow 128
+#define r_WIND_browser 128

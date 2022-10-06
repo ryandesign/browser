@@ -357,7 +357,7 @@ void doNewCmd(Boolean showWindow)
     Boolean ok = true;
     char const * const html = "<html><head><title>Hello World</title></head><body><p>The quick brown fox jumps over the lazy dog.</p></body></html>";
 
-    windowP = GetNewCWindow(rWindow, NULL, kMoveToFront);
+    windowP = GetNewCWindow(r_WIND_browser, NULL, kMoveToFront);
     if (!windowP)
         ok = false;
 

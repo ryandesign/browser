@@ -116,7 +116,7 @@ resource 'STR#' (r_STRx_error_messages, preload) {
 	}
 };
 
-resource 'WIND' (rWindow, purgeable) {
+resource 'WIND' (r_WIND_browser, purgeable) {
 	{40, 40, 200, 200},
 	kWindowFullZoomGrowDocumentProc,
 	invisible,
