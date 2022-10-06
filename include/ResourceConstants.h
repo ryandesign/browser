@@ -4,7 +4,6 @@
 
 #define rFatalErrorAlert 128
 
-#define eNoAppearance 1
 #define eMissingResource 2
 #define eNoMemory 3
 #define eUnknownError 4
@@ -33,6 +32,7 @@
 #define kMinimumSize 2048
 
 #define r_STRx_error_messages 128
+#define e_no_appearance 1
 
 #define r_TEXT_css 128
 

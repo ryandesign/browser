@@ -777,7 +777,7 @@ static void init_app()
 #endif
     	err = Gestalt(gestaltAppearanceAttr, &result);
 	if (err)
-        fatal_error_alert(eNoAppearance, has_autopositioning);
+        fatal_error_alert(e_no_appearance, has_autopositioning);
 	RegisterAppearanceClient();
 
 	menuBar = GetNewMBar(rMenuBar);
