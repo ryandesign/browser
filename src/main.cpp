@@ -302,7 +302,7 @@ void adjustMenus()
 	frontWindowPtr = FrontWindow();
 	frontWindowType = getWindowType(frontWindowPtr);
 
-	menu = GetMenuHandle(mEdit);
+    menu = GetMenuHandle(r_MENU_edit);
 	setItemEnabled(menu, 0, frontWindowType == kDAWindow);
 }
 
@@ -465,7 +465,7 @@ void doMenuCommand(long menuResult)
         case r_MENU_file:
 			handleFileCommand(menuItem);
 			break;
-		case mEdit:
+        case r_MENU_edit:
 			handleEditCommand(menuItem);
 			break;
 	}

@@ -8,8 +8,6 @@
 
 #define r_MBAR 128
 
-#define mEdit 130
-
 #define r_MENU_apple 128
 #define iAbout 1
 
@@ -18,6 +16,7 @@
 #define iClose 2
 #define iQuit 4
 
+#define r_MENU_edit 130
 #define iUndo 1
 #define iCut 3
 #define iCopy 4

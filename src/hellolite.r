@@ -39,7 +39,7 @@ resource 'MBAR' (r_MBAR) {
 	{
 		r_MENU_apple;
 		r_MENU_file;
-		mEdit
+		r_MENU_edit
 	}
 };
 
@@ -69,8 +69,8 @@ resource 'MENU' (r_MENU_file) {
 	}
 };
 
-resource 'MENU' (mEdit) {
-	mEdit,
+resource 'MENU' (r_MENU_edit) {
+	r_MENU_edit,
 	kMenuStdMenuProc,
 	0b1111111111111111111111111111101,
 	enabled,
