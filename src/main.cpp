@@ -782,13 +782,13 @@ static void init_app()
 
 	menuBar = GetNewMBar(rMenuBar);
 	if (!menuBar)
-        fatal_error_alert(eMissingResource, has_autopositioning);
+        fatal_error_alert(e_no_resource, has_autopositioning);
 	SetMenuBar(menuBar);
 	DisposeHandle(menuBar);
 
 	menu = GetMenuHandle(mApple);
 	if (!menu)
-        fatal_error_alert(eMissingResource, has_autopositioning);
+        fatal_error_alert(e_no_resource, has_autopositioning);
 	AppendResMenu(menu, 'DRVR');
 
     GetDateTime((unsigned long *)&qd.randSeed);
@@ -801,7 +801,7 @@ static void init_app()
         ReleaseResource(css);
     }
     else
-        fatal_error_alert(eMissingResource, has_autopositioning);
+        fatal_error_alert(e_no_resource, has_autopositioning);
 #endif
 
 	adjustMenus();
