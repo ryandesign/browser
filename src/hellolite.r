@@ -10,7 +10,7 @@
 
 resource 'ALRT' (rFatalErrorAlert) {
 	{84, 64, 198, 448},
-	rFatalErrorAlert,
+	r_DITL_fatal_error,
 	{
 		OK, visible, sound1,
 		OK, visible, sound1,
@@ -20,7 +20,7 @@ resource 'ALRT' (rFatalErrorAlert) {
 	alertPositionMainScreen
 };
 
-resource 'DITL' (rFatalErrorAlert) {
+resource 'DITL' (r_DITL_fatal_error) {
 	{
 		{84, 316, 104, 374},
 		Button {
