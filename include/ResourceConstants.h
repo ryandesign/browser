@@ -4,8 +4,6 @@
 
 #define rFatalErrorAlert 128
 
-#define eUnknownError 4
-
 #define rMenuBar 128
 
 #define mApple 128
@@ -33,6 +31,7 @@
 #define e_no_appearance 1
 #define e_no_resource 2
 #define e_no_memory 3
+#define e_unknown_error 4
 
 #define r_TEXT_css 128
 

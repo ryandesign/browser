@@ -75,7 +75,7 @@ static void oserr_alert(OSErr err)
             error_number = e_no_memory;
             break;
         default:
-            error_number = eUnknownError;
+            error_number = e_unknown_error;
     }
 
     error_alert(error_number);
@@ -665,7 +665,7 @@ void doEventLoop()
         }
         catch (...)
         {
-            error_alert(eUnknownError);
+            error_alert(e_unknown_error);
         }
 	}
 }
