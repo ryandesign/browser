@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 // Mac headers
-#include <Memory.h>
+#include <MacMemory.h>
 #include <MacWindows.h>
 #include <Quickdraw.h>
 //#include <TextUtils.h>
