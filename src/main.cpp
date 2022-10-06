@@ -55,7 +55,7 @@ static void error_alert(unsigned short error_number)
     params.defaultButton = kAlertStdAlertOKButton;
     params.cancelButton = 0;
     params.position = kWindowDefaultPosition;
-    GetIndString(error_message, rFatalErrorStrings, error_number);
+    GetIndString(error_message, r_STRx_error_messages, error_number);
     err = StandardAlert(kAlertStopAlert, error_message, nil, &params, &item_hit);
     // TODO: Remove this debugging code:
     if (err)
@@ -708,7 +708,7 @@ static void fatal_error_alert(unsigned short error_number, Boolean has_autoposit
 #endif
 
     SetCursor(&qd.arrow);
-    GetIndString(error_message, rFatalErrorStrings, error_number);
+    GetIndString(error_message, r_STRx_error_messages, error_number);
     ParamText(error_message, "\p", "\p", "\p");
     item_hit = StopAlert(rFatalErrorAlert, nil);
 
