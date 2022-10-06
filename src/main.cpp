@@ -10,6 +10,7 @@
 #include <Fonts.h>
 #include <Gestalt.h>
 #include <LowMem.h>
+#include <MacTypes.h>
 #include <Quickdraw.h>
 #include <TextEdit.h>
 #include <ToolUtils.h>
@@ -22,6 +23,7 @@
 
 // My headers
 #include "Constants.h"
+#include "oserr_exception.h"
 #include "ResourceConstants.h"
 #include "WebView.h"
 
@@ -35,6 +37,48 @@ Boolean gMenubarDirty = true;
 #define kWindowInset 2
 #define RectWidth(rect) ((rect).right - (rect).left)
 #define RectHeight(rect) ((rect).bottom - (rect).top)
+
+static void error_alert(unsigned short error_number)
+{
+    short item_hit;
+    Str255 error_message;
+    OSErr err;
+    AlertStdAlertParamRec params;
+
+    params.movable = false;
+    params.helpButton = false;
+    params.filterProc = nil;
+    params.defaultText = (StringPtr)kAlertDefaultOKText;
+    params.cancelText = nil;
+    params.otherText = nil;
+    params.defaultButton = kAlertStdAlertOKButton;
+    params.cancelButton = 0;
+    params.position = kWindowDefaultPosition;
+    GetIndString(error_message, rFatalErrorStrings, error_number);
+    err = StandardAlert(kAlertStopAlert, error_message, nil, &params, &item_hit);
+    // TODO: Remove this debugging code:
+    if (err)
+    {
+        NumToString(err, error_message);
+        DebugStr(error_message);
+    }
+}
+
+static void oserr_alert(OSErr err)
+{
+    unsigned short error_number;
+
+    switch(err)
+    {
+        case memFullErr:
+            error_number = eNoMemory;
+            break;
+        default:
+            error_number = eUnknownError;
+    }
+
+    error_alert(error_number);
+}
 
 void delay_until(unsigned long ticks)
 {
@@ -604,14 +648,24 @@ void doEventLoop()
 			gMenubarDirty = false;
 		}
 		gotEvent = WaitNextEvent(everyEvent, &event, kSleepTime, cursorRgn);
-		if (gotEvent)
-		{
-			doEvent(&event);
-		}
-		else
-		{
-			doIdle(&event);
-		}
+        try {
+            if (gotEvent)
+                doEvent(&event);
+            else
+                doIdle(&event);
+        }
+        catch (oserr_exception const& e)
+        {
+            oserr_alert(e.err());
+        }
+        catch (std::bad_alloc const& e)
+        {
+            error_alert(eNoMemory);
+        }
+        catch (...)
+        {
+            error_alert(eUnknownError);
+        }
 	}
 }
 

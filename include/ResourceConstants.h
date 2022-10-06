@@ -7,6 +7,8 @@
 #define rFatalErrorStrings 128
 #define eNoAppearance 1
 #define eMissingResource 2
+#define eNoMemory 3
+#define eUnknownError 4
 
 #define rMenuBar 128
 

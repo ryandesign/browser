@@ -107,10 +107,12 @@ resource 'SIZE' (rSize, purgeable)  {
 	kMinimumSize * 1024
 };
 
-resource 'STR#' (rFatalErrorStrings, purgeable) {
+resource 'STR#' (rFatalErrorStrings, preload) {
 	{
 		kProjectName " cannot start because the Appearance Extension is not installed.",
-		kProjectName " cannot start because a required application resource is missing."
+		kProjectName " cannot start because a required application resource is missing.",
+		"There is not enough memory to perform that operation.",
+		"An unexpected error occurred."
 	}
 };
 
