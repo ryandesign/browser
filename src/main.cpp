@@ -632,7 +632,7 @@ static void expand_stack(long extra_bytes)
     SetApplLimit(GetApplLimit() - extra_bytes);
 }
 
-static void fatal_error(short error_number, Boolean has_autopositioning)
+static void fatal_error_alert(unsigned short error_number, Boolean has_autopositioning)
 {
     short item_hit;
     Str255 error_message;
@@ -722,18 +722,18 @@ static void init_app()
 #endif
     	err = Gestalt(gestaltAppearanceAttr, &result);
 	if (err)
-        fatal_error(eNoAppearance, has_autopositioning);
+        fatal_error_alert(eNoAppearance, has_autopositioning);
 	RegisterAppearanceClient();
 
 	menuBar = GetNewMBar(rMenuBar);
 	if (!menuBar)
-        fatal_error(eMissingResource, has_autopositioning);
+        fatal_error_alert(eMissingResource, has_autopositioning);
 	SetMenuBar(menuBar);
 	DisposeHandle(menuBar);
 
 	menu = GetMenuHandle(mApple);
 	if (!menu)
-        fatal_error(eMissingResource, has_autopositioning);
+        fatal_error_alert(eMissingResource, has_autopositioning);
 	AppendResMenu(menu, 'DRVR');
 
     GetDateTime((unsigned long *)&qd.randSeed);
