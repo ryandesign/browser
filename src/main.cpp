@@ -697,7 +697,7 @@ static void fatal_error_alert(unsigned short error_number, Boolean has_autoposit
     Point offset;
     if (!has_autopositioning)
     {
-        alrt = (AlertTHndl)GetResource('ALRT', rFatalErrorAlert);
+        alrt = (AlertTHndl)GetResource('ALRT', r_ALRT_fatal_error);
         if (alrt)
         {
             offset.h = (RectWidth(qd.screenBits.bounds) - RectWidth((**alrt).boundsRect) >> 1) - (**alrt).boundsRect.left;
@@ -710,7 +710,7 @@ static void fatal_error_alert(unsigned short error_number, Boolean has_autoposit
     SetCursor(&qd.arrow);
     GetIndString(error_message, r_STRx_error_messages, error_number);
     ParamText(error_message, "\p", "\p", "\p");
-    item_hit = StopAlert(rFatalErrorAlert, nil);
+    item_hit = StopAlert(r_ALRT_fatal_error, nil);
 
 #ifdef __m68k__
     if (!has_autopositioning && alrt)

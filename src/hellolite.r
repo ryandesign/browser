@@ -8,7 +8,7 @@
 
 #define kProjectName "hellolite"
 
-resource 'ALRT' (rFatalErrorAlert) {
+resource 'ALRT' (r_ALRT_fatal_error) {
 	{84, 64, 198, 448},
 	r_DITL_fatal_error,
 	{

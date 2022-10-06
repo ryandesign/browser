@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-#define rFatalErrorAlert 128
+#define r_ALRT_fatal_error 128
 
 #define r_DITL_fatal_error 128
 
