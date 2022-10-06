@@ -24,7 +24,7 @@
 #define iClear 6
 #define iSelectAll 7
 
-#define rSize -1
+#define r_SIZE -1
 #define kPreferredSize 6144
 #define kMinimumSize 2048
 

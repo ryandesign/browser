@@ -86,7 +86,7 @@ resource 'MENU' (r_MENU_edit) {
 	}
 };
 
-resource 'SIZE' (rSize, purgeable)  {
+resource 'SIZE' (r_SIZE, purgeable) {
 	reserved,
 	acceptSuspendResumeEvents,
 	reserved,
