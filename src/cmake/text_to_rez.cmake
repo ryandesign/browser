@@ -4,6 +4,7 @@
 
 file(READ ${infile} data)
 string(REGEX REPLACE "[ \t]*[\n\r]+[ \t]*" "\r" data "${data}")
+string(REGEX REPLACE "\r$" "" data "${data}")
 string(HEX "${data}" data)
 string(REGEX MATCHALL "..?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?" data "${data}")
 file(WRITE "${outfile}" "data '${rsrc_type}' (${rsrc_id}, purgeable) {\n")
