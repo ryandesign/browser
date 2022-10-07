@@ -35,5 +35,6 @@
 #define e_unknown_error 4
 
 #define r_TEXT_css 128
+#define r_TEXT_html 129
 
 #define r_WIND_browser 128

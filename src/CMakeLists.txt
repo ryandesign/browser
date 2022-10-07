@@ -13,6 +13,7 @@ set(app_SOURCES
 if(USE_LITEHTML)
     list(APPEND app_SOURCES
         WebView.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/home.html.r
         ${CMAKE_CURRENT_BINARY_DIR}/master.css.r
         quickdraw_container.cpp
         quickdraw_font.cpp
@@ -65,7 +66,22 @@ if(USE_LITEHTML)
     )
     add_custom_target(make_css_rez DEPENDS ${rez_file})
 
-    add_dependencies(app litehtml make_css_rez)
+    set(text_file ${CMAKE_CURRENT_SOURCE_DIR}/home.html)
+    set(rez_file ${CMAKE_CURRENT_BINARY_DIR}/home.html.r)
+    add_custom_command(
+        COMMAND ${CMAKE_COMMAND}
+            -Dinfile=${text_file}
+            -Doutfile=${rez_file}
+            -Drsrc_type=TEXT
+            -Drsrc_id=129
+            -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/text_to_rez.cmake
+        DEPENDS ${text_file}
+        OUTPUT ${rez_file}
+        VERBATIM
+    )
+    add_custom_target(make_html_rez DEPENDS ${rez_file})
+
+    add_dependencies(app litehtml make_css_rez make_html_rez)
 
     target_include_directories(app SYSTEM PRIVATE
         ${litehtml_INCLUDE_DIR}

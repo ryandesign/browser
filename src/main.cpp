@@ -355,7 +355,7 @@ void doNewCmd(Boolean showWindow)
     WindowPtr windowP;
     WebViewRef webViewRef;
     Boolean ok = true;
-    char const * const html = "<html><head><title>Hello World</title></head><body><p>The quick brown fox jumps over the lazy dog.</p></body></html>";
+    Handle html;
 
     windowP = GetNewCWindow(r_WIND_browser, NULL, kMoveToFront);
     if (!windowP)
@@ -365,13 +365,22 @@ void doNewCmd(Boolean showWindow)
     if (ok)
     {
         webViewRef = NewWebView(windowP);
-        if (webViewRef)
-        {
-            SetWebViewHTML(webViewRef, html);
-            SetWRefCon(windowP, (long)webViewRef);
-        }
-        else
+        if (!webViewRef)
             ok = false;
+    }
+    if (ok)
+    {
+        SetWRefCon(windowP, (long)webViewRef);
+        html = GetResource('TEXT', r_TEXT_html);
+        if (!html)
+            ok = false;
+    }
+    if (ok)
+    {
+        short saved_state = HGetState(html);
+        HLock(html);
+        SetWebViewHTML(webViewRef, *html);
+        HSetState(html, saved_state);
     }
 #endif
 
@@ -397,6 +406,8 @@ void doNewCmd(Boolean showWindow)
     } else {
         if (windowP)
             DisposeWindow(windowP);
+        if (webViewRef)
+            DisposeWebView(webViewRef);
     }
 }
 
