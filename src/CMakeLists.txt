@@ -49,16 +49,17 @@ set_target_properties(app PROPERTIES
 
 if(USE_LITEHTML)
     ExternalProject_Get_Property(litehtml SOURCE_DIR)
-    set(css_file ${SOURCE_DIR}/include/master.css)
+
+    set(text_file ${SOURCE_DIR}/include/master.css)
     set(css_rez_file ${CMAKE_CURRENT_BINARY_DIR}/master.css.r)
     add_custom_command(
         COMMAND ${CMAKE_COMMAND}
-            -Dinfile=${css_file}
+            -Dinfile=${text_file}
             -Doutfile=${css_rez_file}
             -Drsrc_type=TEXT
             -Drsrc_id=128
             -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/text_to_rez.cmake
-        DEPENDS ${css_file}
+        DEPENDS ${text_file}
         OUTPUT ${css_rez_file}
         VERBATIM
     )
