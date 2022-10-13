@@ -6,7 +6,7 @@
 
 #include "ResourceConstants.h"
 
-#define kProjectName "hellolite"
+#define k_app_name "hellolite"
 
 resource 'ALRT' (r_ALRT_fatal_error) {
 	{84, 64, 198, 448},
@@ -50,7 +50,7 @@ resource 'MENU' (r_MENU_apple) {
 	enabled,
 	apple,
 	{
-		"About " kProjectName "\0xC9", noIcon, noKey, noMark, plain;
+		"About " k_app_name "\0xC9", noIcon, noKey, noMark, plain;
 		"-", noIcon, noKey, noMark, plain
 	}
 };
@@ -109,8 +109,8 @@ resource 'SIZE' (r_SIZE, purgeable) {
 
 resource 'STR#' (r_STRx_error_messages, preload) {
 	{
-		kProjectName " cannot start because the Appearance Extension is not installed.",
-		kProjectName " cannot start because a required application resource is missing.",
+		k_app_name " cannot start because the Appearance Extension is not installed.",
+		k_app_name " cannot start because a required resource is missing.",
 		"There is not enough memory to perform that operation.",
 		"An unexpected error occurred."
 	}
