@@ -109,8 +109,8 @@ resource 'SIZE' (r_SIZE, purgeable) {
 
 resource 'STR#' (r_STRx_error_messages, preload) {
 	{
-		k_app_name " cannot start because the Appearance Extension is not installed.",
-		k_app_name " cannot start because a required resource is missing.",
+		k_app_name " could not be opened because the Appearance Extension is not installed.",
+		k_app_name " could not be opened because a required resource is missing.",
 		"There is not enough memory to perform that operation.",
 		"An unexpected error occurred."
 	}
