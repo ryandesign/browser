@@ -6,6 +6,7 @@
 #define WEBVIEW_H
 
 // Mac headers
+#include <MacWindows.h>
 
 // System headers
 
@@ -29,8 +30,8 @@ extern "C" {
 
 void init_web_views(char const * const css);
 WebViewRef NewWebView(WindowPtr window);
-void SetWebViewRect(WebViewRef webViewRef, const Rect *rect);
-void SetWebViewHTML(WebViewRef webViewRef, const char *html);
+void SetWebViewRect(WebViewRef webViewRef, Rect const *rect);
+void SetWebViewHTML(WebViewRef webViewRef, char const *html);
 void DrawWebView(WebViewRef webViewRef);
 void DisposeWebView(WebViewRef webViewRef);
 

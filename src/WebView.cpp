@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include "WebView.hpp"
+
 // Mac headers
 #include <MacMemory.h>
 #include <MacWindows.h>
@@ -17,24 +19,18 @@
 
 // My headers
 #include "WebView.h"
-#include "WebView.hpp"
+#include "helpers.h"
 #include "quickdraw_container.h"
 
-// Defines
-#define RectWidth(rect) ((rect).right - (rect).left)
-#define RectHeight(rect) ((rect).bottom - (rect).top)
-
-WebView::WebView(litehtml::context *liteContext, WindowPtr window)
+WebView::WebView(litehtml::context *liteContext, WindowRecord& window)
     : m_liteContext(liteContext), m_window(window), m_renderedWidth(0)
 {
-    SetRect(&m_rect, 0, 0, RectWidth(window->portRect), RectHeight(window->portRect));
+    SetRect(&m_rect, 0, 0, rect_width(window.port.portRect), rect_height(window.port.portRect));
     SetPt(&m_scroll, 0, 0);
 }
 
 WebView::~WebView()
 {
-    // TODO: Do I not have to delete this?
-    //delete m_liteDoc;
 }
 
 void WebView::get_client_rect(litehtml::position& client) const
@@ -45,31 +41,29 @@ void WebView::get_client_rect(litehtml::position& client) const
     client.height = m_rect.bottom - client.y;
 }
 
-void WebView::set_caption(const char *caption)
+void WebView::set_caption(char const *caption)
 {
-    setwtitle(m_window, caption);
+    setwtitle(reinterpret_cast<WindowPtr>(&m_window), caption);
 }
 
-void WebView::setRect(const Rect *rect)
+void WebView::setRect(Rect const *rect)
 {
     m_rect = *rect;
     m_renderedWidth = 0;
 }
 
-void WebView::setHTML(const char *html)
+void WebView::setHTML(char const *html)
 {
-    // TODO: Do I not have to delete this?
-    //delete m_liteDoc;
     m_liteDoc = litehtml::document::createFromUTF8(html, this, m_liteContext);
     m_renderedWidth = 0;
 }
 
-short WebView::render() {
-    short bestWidth = 0;
+int16_t WebView::render() {
+    int16_t bestWidth = 0;
 
     if (m_liteDoc)
     {
-        short maxWidth = RectWidth(m_rect);
+        int16_t maxWidth = rect_width(m_rect);
         if (m_renderedWidth != maxWidth)
         {
             bestWidth = m_liteDoc->render(maxWidth);
@@ -77,7 +71,7 @@ short WebView::render() {
             {
                 m_liteDoc->render(bestWidth);
             }
-            m_renderedWidth = maxWidth;
+            //m_renderedWidth = maxWidth;
         }
     }
 
@@ -88,8 +82,9 @@ void WebView::draw()
 {
     if (m_liteDoc)
     {
-        short width = render();
-        litehtml::position clip(m_scroll.h, m_scroll.v, width, RectHeight(m_rect));
+        // TODO: I shouldn't have to render every time I draw, should I?
+        int16_t width = render();
+        litehtml::position clip(m_scroll.h, m_scroll.v, width, rect_height(m_rect));
 /*
         Str255 d;
         NumToString(clip.x, d);
@@ -124,10 +119,10 @@ WebViewRef NewWebView(WindowPtr window)
 //    Size htmlPSize;
 
     if (!s_initialized)
-        return nil;
+        return nullptr;
 
     // TODO: wrap in try?
-    webView = new WebView(&s_context, window);
+    webView = new WebView(&s_context, *reinterpret_cast<WindowPeek>(window));
     /*;
 
     if (webViewPtr) {
@@ -141,31 +136,31 @@ WebViewRef NewWebView(WindowPtr window)
                 (**webViewPtr).htmlP = htmlP;
             } else {
                 DisposeHandle((Handle)webViewPtr);
-                webViewPtr = nil;
+                webViewPtr = nullptr;
             }
         }
     }
     */
-    return (WebViewRef)webView;
+    return reinterpret_cast<WebViewRef>(webView);
 }
 
-void SetWebViewRect(WebViewRef webViewRef, const Rect *rect)
+void SetWebViewRect(WebViewRef webViewRef, Rect const *rect)
 {
-    WebView *webView = (WebView *)webViewRef;
+    WebView *webView = reinterpret_cast<WebView *>(webViewRef);
 
     webView->setRect(rect);
 }
 
-void SetWebViewHTML(WebViewRef webViewRef, const char *html)
+void SetWebViewHTML(WebViewRef webViewRef, char const *html)
 {
-    WebView *webView = (WebView *)webViewRef;
+    WebView *webView = reinterpret_cast<WebView *>(webViewRef);
 
     webView->setHTML(html);
 }
 
 void DrawWebView(WebViewRef webViewRef)
 {
-    WebView *webView = (WebView *)webViewRef;
+    WebView *webView = reinterpret_cast<WebView *>(webViewRef);
 
     webView->draw();
 /*
@@ -178,7 +173,7 @@ void DrawWebView(WebViewRef webViewRef)
 
 void DisposeWebView(WebViewRef webViewRef)
 {
-    WebView *webView = (WebView *)webViewRef;
+    WebView *webView = reinterpret_cast<WebView *>(webViewRef);
 
     delete webView;
 }

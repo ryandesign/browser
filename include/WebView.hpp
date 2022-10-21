@@ -5,29 +5,31 @@
 #ifndef WEBVIEW_HPP
 #define WEBVIEW_HPP
 
+#include <MacWindows.h>
+
 #include "quickdraw_container.h"
 
 class WebView : public quickdraw_container
 {
     public:
-        WebView(litehtml::context *liteContext, WindowPtr window);
+        WebView(litehtml::context *liteContext, WindowRecord& window);
         ~WebView();
 
         void get_client_rect(litehtml::position& client) const;
-        void set_caption(const char *caption);
+        void set_caption(char const *caption);
 
-        void setRect(const Rect *rect);
-        void setHTML(const char *html);
-        short render();
+        void setRect(Rect const *rect);
+        void setHTML(char const *html);
+        int16_t render();
         void draw();
 
     private:
         litehtml::context *m_liteContext;
         litehtml::document::ptr m_liteDoc;
-        WindowPtr m_window;
+        WindowRecord& m_window;
         Rect m_rect;
         Point m_scroll;
-        short m_renderedWidth;
+        int16_t m_renderedWidth;
 };
 
 #endif

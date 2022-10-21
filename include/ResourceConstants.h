@@ -2,27 +2,45 @@
 //
 // SPDX-License-Identifier: MIT
 
+#define k_move_horizontally (1 << 0)
+#define k_move_vertically (1 << 1)
+#define k_resize_horizontally (1 << 2)
+#define k_resize_vertically (1 << 3)
+
 #define r_ALRT_fatal_error 128
+
+#define r_CNTL_header 128
+#define r_CNTL_back_button 129
+#define r_CNTL_forward_button 130
+#define r_CNTL_home_button 131
+#define r_CNTL_reload_button 132
+#define r_CNTL_address_bar 133
+#define r_CNTL_web_view 134
+#define r_CNTL_horizontal_scroll_bar 135
+#define r_CNTL_vertical_scroll_bar 136
 
 #define r_DITL_fatal_error 128
 
 #define r_MBAR 128
 
 #define r_MENU_apple 128
-#define iAbout 1
+#define k_apple_menu_id 1
+#define i_about 1
 
 #define r_MENU_file 129
-#define iNew 1
-#define iClose 2
-#define iQuit 4
+#define k_file_menu_id 2
+#define i_new_window 1
+#define i_close_window 2
+#define i_quit 4
 
 #define r_MENU_edit 130
-#define iUndo 1
-#define iCut 3
-#define iCopy 4
-#define iPaste 5
-#define iClear 6
-#define iSelectAll 7
+#define k_edit_menu_id 3
+#define i_undo 1
+#define i_cut 3
+#define i_copy 4
+#define i_paste 5
+#define i_clear 6
+#define i_select_all 7
 
 #define r_SIZE -1
 #define kPreferredSize 6144

@@ -5,9 +5,16 @@
 set(REZ_INCLUDE_PATH "${hellolite_SOURCE_DIR}/include;${REZ_INCLUDE_PATH}")
 
 set(app_SOURCES
+    base_app.cpp
+    base_control.cpp
+    base_window.cpp
+    browser_app.cpp
+    browser_tab.cpp
+    browser_window.cpp
     hellolite.r
+    helpers.cpp
     main.cpp
-    oserr_exception.cpp
+    root_control.cpp
 )
 
 if(USE_LITEHTML)
