@@ -26,6 +26,6 @@ if(USE_LITEHTML)
         CACHE PATH "litehtml source directory" FORCE
     )
     set(litehtml_LIBRARY "${BINARY_DIR}/liblitehtml.a;${BINARY_DIR}/src/gumbo/libgumbo.a"
-        CACHE PATH "litehtml library" FORCE
+        CACHE STRING "litehtml library" FORCE
     )
 endif()
