@@ -190,7 +190,8 @@ resource 'MBAR' (r_MBAR) {
 	{
 		r_MENU_apple;
 		r_MENU_file;
-		r_MENU_edit
+		r_MENU_edit;
+		r_MENU_window
 	}
 };
 
@@ -237,6 +238,18 @@ resource 'MENU' (r_MENU_edit) {
 	}
 };
 
+resource 'MENU' (r_MENU_window) {
+	k_window_menu_id,
+	kMenuStdMenuProc,
+	0b1111111111111111111111111111111,
+	enabled,
+	"Window",
+	{
+		"Zoom", noIcon, "/", noMark, plain;
+		" ", noIcon, "M", noMark, plain
+	}
+};
+
 resource 'SIZE' (r_SIZE, purgeable) {
 	reserved,
 	acceptSuspendResumeEvents,
@@ -264,6 +277,13 @@ resource 'STR#' (r_STRx_error_messages, preload) {
 		k_app_name " could not be opened because a required resource is missing.",
 		"There is not enough memory to perform that operation.",
 		"An unexpected error occurred."
+	}
+};
+
+resource 'STR#' (r_STRx_menu_items, preload, purgeable) {
+	{
+		"Collapse",
+		"Expand"
 	}
 };
 

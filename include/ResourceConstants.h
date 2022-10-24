@@ -42,6 +42,11 @@
 #define i_clear 6
 #define i_select_all 7
 
+#define r_MENU_window 131
+#define k_window_menu_id 4
+#define i_zoom 1
+#define i_collapse 2
+
 #define r_SIZE -1
 #define kPreferredSize 6144
 #define kMinimumSize 2048
@@ -51,6 +56,10 @@
 #define e_no_resource 2
 #define e_no_memory 3
 #define e_unknown_error 4
+
+#define r_STRx_menu_items 129
+#define k_collapse 1
+#define k_expand 2
 
 #define r_TEXT_css 128
 #define r_TEXT_html 129

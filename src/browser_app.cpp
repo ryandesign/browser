@@ -146,6 +146,7 @@ void browser_app::on_file_menu(int16_t menu_item)
     {
         case i_new_window:
             new browser_window();
+            adjust_menu_bar();
             break;
         case i_close_window:
             if (WindowPtr window = FrontWindow())
@@ -161,6 +162,21 @@ void browser_app::on_edit_menu(int16_t menu_item)
 {
     if (!SystemEdit(menu_item - 1))
     {
+    }
+}
+
+void browser_app::on_window_menu(int16_t menu_item)
+{
+    switch (menu_item)
+    {
+        case i_collapse:
+            if (WindowPtr window = FrontWindow())
+                CollapseWindow(window, !IsWindowCollapsed(window));
+            break;
+        case i_zoom:
+            if (WindowPeek window = reinterpret_cast<WindowPeek>(FrontWindow()))
+                zoom_window(*window, EqualRect(&(**window->contRgn).rgnBBox, &(**reinterpret_cast<WStateDataHandle>(window->dataHandle)).userState) ? inZoomOut : inZoomIn);
+            break;
     }
 }
 
@@ -196,15 +212,35 @@ void browser_app::try_consume_event()
 void browser_app::adjust_menu_bar()
 {
     WindowPtr window = FrontWindow();
-    MenuHandle menu = GetMenuHandle(k_edit_menu_id);
-    set_menu_enabled(menu, is_desk_accessory_window(window));
+    set_menu_enabled(GetMenuHandle(k_edit_menu_id), is_desk_accessory_window(window));
+    set_menu_enabled(GetMenuHandle(k_window_menu_id), nullptr != window);
 }
 
 void browser_app::adjust_menu_items()
 {
     WindowPtr window = FrontWindow();
+    uint32_t features;
+    bool can_zoom, can_collapse, is_collapsed;
+    if (window && (noErr == GetWindowFeatures(window, &features)))
+    {
+        can_zoom = features & kWindowCanZoom;
+        can_collapse = features & kWindowCanCollapse;
+        is_collapsed = IsWindowCollapsed(window);
+    }
+    else
+    {
+        can_zoom = false;
+        can_collapse = false;
+        is_collapsed = false;
+    }
     MenuHandle menu = GetMenuHandle(k_file_menu_id);
     set_menu_item_enabled(menu, i_close_window, nullptr != window);
+    menu = GetMenuHandle(k_window_menu_id);
+    set_menu_item_enabled(menu, i_zoom, can_zoom);
+    set_menu_item_enabled(menu, i_collapse, can_collapse);
+    Str255 menu_item_text;
+    GetIndString(menu_item_text, r_STRx_menu_items, is_collapsed ? k_expand : k_collapse);
+    SetMenuItemText(menu, i_collapse, menu_item_text);
 }
 
 void browser_app::on_menu(int16_t menu_id, int16_t menu_item)
@@ -219,6 +255,9 @@ void browser_app::on_menu(int16_t menu_id, int16_t menu_item)
             break;
         case k_edit_menu_id:
             on_edit_menu(menu_item);
+            break;
+        case k_window_menu_id:
+            on_window_menu(menu_item);
             break;
     }
 }

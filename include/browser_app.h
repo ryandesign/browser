@@ -20,6 +20,7 @@ class browser_app : public base_app
         void on_apple_menu(int16_t menu_item);
         void on_file_menu(int16_t menu_item);
         void on_edit_menu(int16_t menu_item);
+        void on_window_menu(int16_t menu_item);
         void on_quit();
 
     protected:
