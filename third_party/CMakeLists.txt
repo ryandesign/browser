@@ -28,12 +28,12 @@ if(USE_LITEHTML)
     ExternalProject_Get_Property(litehtml SOURCE_DIR)
 
     set(litehtml_INCLUDE_DIR ${SOURCE_DIR}/include
-        CACHE PATH "litehtml header directory" FORCE
+        CACHE PATH "litehtml header directory"
     )
     set(litehtml_SOURCE_DIR ${SOURCE_DIR}/src
-        CACHE PATH "litehtml source directory" FORCE
+        CACHE PATH "litehtml source directory"
     )
     set(litehtml_LIBRARY "${BINARY_DIR}/liblitehtml.a;${BINARY_DIR}/src/gumbo/libgumbo.a"
-        CACHE STRING "litehtml library" FORCE
+        CACHE STRING "litehtml library"
     )
 endif()
