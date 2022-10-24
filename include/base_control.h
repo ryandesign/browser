@@ -18,6 +18,7 @@ class base_control
         virtual ~base_control();
         static base_control *get_from_control(const ControlHandle control);
         static base_control *get_from_control(ControlRecord const& control);
+        bool is_visible();
         void show();
         void hide();
         void window_did_resize(int16_t dx, int16_t dy);

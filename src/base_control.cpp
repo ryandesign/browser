@@ -64,6 +64,11 @@ base_control::~base_control()
     DisposeControl(m_control);
 }
 
+bool base_control::is_visible()
+{
+    return (**m_control).contrlVis;
+}
+
 void base_control::show()
 {
     ShowControl(m_control);
@@ -76,7 +81,9 @@ void base_control::hide()
 
 void base_control::window_did_resize(int16_t dx, int16_t dy)
 {
-    hide();
+    bool was_visible = is_visible();
+    if (was_visible)
+        hide();
     if (m_resize_horizontally)
         (**m_control).contrlRect.right += dx;
     if (m_resize_vertically)
@@ -87,5 +94,6 @@ void base_control::window_did_resize(int16_t dx, int16_t dy)
         dy = 0;
     if (dx || dy)
         OffsetRect(&(**m_control).contrlRect, dx, dy);
-    show();
+    if (was_visible)
+        show();
 }
