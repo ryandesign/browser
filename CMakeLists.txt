@@ -9,5 +9,11 @@ project(hellolite
 )
 
 option(USE_LITEHTML "Use litehtml" ON)
+
+# Make each function and global/static variable a separate section so that the
+# linker can remove unused ones later. Set globally here so that *all* files are
+# compiled with these options.
+add_compile_options(-fdata-sections;-ffunction-sections)
+
 add_subdirectory(third_party)
 add_subdirectory(src)

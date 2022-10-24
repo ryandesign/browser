@@ -50,9 +50,11 @@ set_target_properties(app PROPERTIES
 
 set_target_properties(app PROPERTIES
     # TODO: Add -Wall and -Wextra eventually. Currently causes too many errors.
-    # TODO: -Wl,--gc-sections causes crashes on 68K: https://github.com/autc04/Retro68/issues/184
-    COMPILE_OPTIONS "-fdata-sections;-ffunction-sections;-Werror"
+    COMPILE_OPTIONS "-Werror"
 )
+# TODO: -Wl,--gc-sections causes crashes
+# https://github.com/autc04/Retro68/issues/184
+# https://github.com/autc04/Retro68/issues/191
 #    LINK_FLAGS "-Wl,--gc-sections"
 
 if(USE_LITEHTML)

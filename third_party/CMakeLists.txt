@@ -4,12 +4,16 @@
 
 include(ExternalProject)
 
+get_directory_property(compile_options COMPILE_OPTIONS)
+list(JOIN compile_options " " compile_options)
+
 if(USE_LITEHTML)
     ExternalProject_Add(litehtml
         CMAKE_ARGS
             -DBUILD_TESTING=OFF
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_C_FLAGS="-DTYPE_BOOL"
+            "-DCMAKE_C_FLAGS=${compile_options} -DTYPE_BOOL"
+            "-DCMAKE_CXX_FLAGS=${compile_options}"
             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         INSTALL_COMMAND ""
