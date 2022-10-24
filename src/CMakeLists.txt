@@ -57,6 +57,18 @@ set_target_properties(app PROPERTIES
 # https://github.com/autc04/Retro68/issues/191
 #    LINK_FLAGS "-Wl,--gc-sections"
 
+if(USE_DLMALLOC)
+    add_dependencies(app dlmalloc)
+
+    target_link_libraries(app PRIVATE
+        ${dlmalloc_LIBRARY}
+    )
+
+    set_property(TARGET app APPEND_STRING PROPERTY
+        LINK_FLAGS " ${dlmalloc_LINK_FLAGS}"
+    )
+endif()
+
 if(USE_LITEHTML)
     ExternalProject_Get_Property(litehtml SOURCE_DIR)
 

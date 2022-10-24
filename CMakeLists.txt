@@ -8,6 +8,7 @@ project(hellolite
     LANGUAGES C CXX
 )
 
+option(USE_DLMALLOC "Use dlmalloc" ON)
 option(USE_LITEHTML "Use litehtml" ON)
 
 # Make each function and global/static variable a separate section so that the

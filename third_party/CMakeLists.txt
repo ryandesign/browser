@@ -11,6 +11,10 @@ get_directory_property(include_directories INCLUDE_DIRECTORIES)
 list(TRANSFORM include_directories PREPEND "-isystem")
 list(JOIN include_directories " " include_directories)
 
+if(USE_DLMALLOC)
+    add_subdirectory(dlmalloc)
+endif()
+
 if(USE_LITEHTML)
     ExternalProject_Add(litehtml
         CMAKE_ARGS
