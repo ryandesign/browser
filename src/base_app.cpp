@@ -314,7 +314,7 @@ void base_app::close_window(WindowRecord& window)
         CloseDeskAcc(window.windowKind);
     else if (base_window *window_obj = base_window::get_from_window(window))
     {
-        if (window_obj->can_close())
+        if (window_obj->should_close())
             delete window_obj;
     }
     else

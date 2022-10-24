@@ -5,6 +5,7 @@
 set(REZ_INCLUDE_PATH "${hellolite_SOURCE_DIR}/include;${REZ_INCLUDE_PATH}")
 
 set(app_SOURCES
+    about_window.cpp
     base_app.cpp
     base_control.cpp
     base_window.cpp

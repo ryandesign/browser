@@ -56,3 +56,4 @@
 #define r_TEXT_html 129
 
 #define r_WIND_browser 128
+#define r_WIND_about 129

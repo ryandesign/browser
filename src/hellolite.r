@@ -8,10 +8,17 @@
 
 #define k_app_name "hellolite"
 
-#define k_window_width 200
-#define k_window_height 200
+#define k_about_window_left 40
+#define k_about_window_top 40
+#define k_about_window_width 200
+#define k_about_window_height 100
+#define k_about_window_right (k_about_window_left + k_about_window_width)
+#define k_about_window_bottom (k_about_window_top + k_about_window_height)
+
 #define k_window_left 40
 #define k_window_top 40
+#define k_window_width 200
+#define k_window_height 200
 #define k_window_right (k_window_left + k_window_width)
 #define k_window_bottom (k_window_top + k_window_height)
 
@@ -194,7 +201,7 @@ resource 'MENU' (r_MENU_apple) {
 	enabled,
 	apple,
 	{
-		"About " k_app_name "\0xC9", noIcon, noKey, noMark, plain;
+		"About " k_app_name, noIcon, noKey, noMark, plain;
 		"-", noIcon, noKey, noMark, plain
 	}
 };
@@ -268,4 +275,14 @@ resource 'WIND' (r_WIND_browser, purgeable) {
 	0x0,
 	"",
 	noAutoCenter
+};
+
+resource 'WIND' (r_WIND_about, purgeable) {
+	{k_about_window_top, k_about_window_left, k_about_window_bottom, k_about_window_right},
+	kWindowDocumentProc,
+	invisible,
+	goAway,
+	0x0,
+	"About " k_app_name,
+	centerMainScreen
 };

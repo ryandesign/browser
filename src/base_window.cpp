@@ -101,9 +101,14 @@ void base_window::update(EventRecord const& event)
 {
 }
 
-bool base_window::can_close()
+bool base_window::should_close()
 {
     return true;
+}
+
+void base_window::select()
+{
+    SelectWindow(reinterpret_cast<WindowPtr>(&m_window));
 }
 
 void base_window::show()

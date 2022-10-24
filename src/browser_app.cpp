@@ -12,6 +12,7 @@
 
 #include "ResourceConstants.h"
 #include "WebView.h"
+#include "about_window.h"
 #include "browser_window.h"
 #include "helpers.h"
 //#include "oserr_exception.h"
@@ -118,6 +119,15 @@ void browser_app::oserr_alert(OSErr err)
 
 void browser_app::about()
 {
+    static about_window *window_obj = nullptr;
+    if (window_obj)
+    {
+        window_obj->show();
+        window_obj->select();
+    }
+    else
+        window_obj = new about_window();
+    adjust_menu_bar();
 }
 
 void browser_app::on_apple_menu(int16_t menu_item)
