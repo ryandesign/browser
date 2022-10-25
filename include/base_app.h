@@ -57,11 +57,13 @@ class base_app
     private:
         static constexpr uint32_t k_visual_delay = 8;
         static constexpr uint32_t k_sleep_time = 0x7FFFFFFF;
+        static constexpr int16_t i_about = 1;
 
         void expand_stack(int32_t extra_bytes);
         void more_masters(int16_t num_masters);
         virtual void will_suspend();
         virtual void will_resume();
+        virtual void about();
 
         uint32_t m_menu_unhighlight_ticks;
         int16_t m_apple_menu_id;

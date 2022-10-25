@@ -130,16 +130,6 @@ void browser_app::about()
     adjust_menu_bar();
 }
 
-void browser_app::on_apple_menu(int16_t menu_item)
-{
-    switch (menu_item)
-    {
-        case i_about:
-            about();
-            break;
-    }
-}
-
 void browser_app::on_file_menu(int16_t menu_item)
 {
     switch (menu_item)
@@ -247,9 +237,6 @@ void browser_app::on_menu(int16_t menu_id, int16_t menu_item)
 {
     switch (menu_id)
     {
-        case k_apple_menu_id:
-            on_apple_menu(menu_item);
-            break;
         case k_file_menu_id:
             on_file_menu(menu_item);
             break;

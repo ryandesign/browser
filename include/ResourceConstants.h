@@ -25,7 +25,6 @@
 
 #define r_MENU_apple 128
 #define k_apple_menu_id 1
-#define i_about 1
 
 #define r_MENU_file 129
 #define k_file_menu_id 2

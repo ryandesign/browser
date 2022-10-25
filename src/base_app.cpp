@@ -455,19 +455,29 @@ void base_app::on_menu_event(int32_t menu_result)
     m_menu_unhighlight_ticks = TickCount();
     if (menu_id)
     {
+        bool handled = false;
         m_menu_unhighlight_ticks += k_visual_delay;
         int16_t menu_item = LoWord(menu_result);
-        if (menu_id == m_apple_menu_id && menu_item > m_num_apple_menu_items)
+        if (menu_id == m_apple_menu_id)
         {
-            if (MenuHandle menu = GetMenuHandle(menu_id))
+            if (menu_item > m_num_apple_menu_items)
             {
-                Str255 item_name;
-                GetMenuItemText(menu, menu_item, item_name);
-                int16_t ref_num = OpenDeskAcc(item_name);
-                adjust_menu_bar();
+                if (MenuHandle menu = GetMenuHandle(menu_id))
+                {
+                    Str255 item_name;
+                    GetMenuItemText(menu, menu_item, item_name);
+                    int16_t ref_num = OpenDeskAcc(item_name);
+                    adjust_menu_bar();
+                }
+                handled = true;
+            }
+            else if (menu_item == i_about)
+            {
+                about();
+                handled = true;
             }
         }
-        else
+        if (!handled)
             on_menu(menu_id, menu_item);
     }
 }
@@ -558,5 +568,9 @@ void base_app::will_suspend()
 }
 
 void base_app::will_resume()
+{
+}
+
+void base_app::about()
 {
 }
