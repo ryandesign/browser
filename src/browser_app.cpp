@@ -27,7 +27,7 @@ browser_app::browser_app() : base_app()
 
 #ifdef USE_LITEHTML
     {
-        Handle css = GetResource('TEXT', r_TEXT_css);
+        Handle css = Get1Resource('TEXT', r_TEXT_css);
         if (css)
         {
             HLock(css);
@@ -55,7 +55,7 @@ void browser_app::fatal_error_alert(int16_t error_number)
     Point offset;
     if (!has_autopositioning)
     {
-        alrt = reinterpret_cast<AlertTHndl>(GetResource('ALRT', r_ALRT_fatal_error));
+        alrt = reinterpret_cast<AlertTHndl>(Get1Resource('ALRT', r_ALRT_fatal_error));
         if (alrt)
         {
             offset.h = (rect_width(qd.screenBits.bounds) - rect_width((**alrt).boundsRect) >> 1) - (**alrt).boundsRect.left;

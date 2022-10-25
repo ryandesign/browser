@@ -134,14 +134,14 @@ typedef mbar **mbar_handle;
 OSErr base_app::load_menu_bar(int16_t mbar_id)
 {
     {
-        mbar_handle mbar = reinterpret_cast<mbar_handle>(GetResource('MBAR', mbar_id));
+        mbar_handle mbar = reinterpret_cast<mbar_handle>(Get1Resource('MBAR', mbar_id));
         if (!mbar)
             return resNotFound;
         m_apple_menu_id = 0;
         m_num_apple_menu_items = 0;
         for (int i = 0; i < (**mbar).length; ++i)
         {
-            MenuHandle menu = reinterpret_cast<MenuHandle>(GetResource('MENU', (**mbar).resource_id[i]));
+            MenuHandle menu = reinterpret_cast<MenuHandle>(Get1Resource('MENU', (**mbar).resource_id[i]));
             if (!menu)
                 return resNotFound;
             if (EqualString((**menu).menuData, "\p\x14", true, true))

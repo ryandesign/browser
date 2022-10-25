@@ -21,7 +21,7 @@ browser_tab::browser_tab(WindowRecord& window)
     m_web_view = NewWebView(reinterpret_cast<WindowPtr>(&window));
     if (!m_web_view)
         throw std::bad_alloc();
-    Handle html = GetResource('TEXT', r_TEXT_html);
+    Handle html = Get1Resource('TEXT', r_TEXT_html);
     if (!html)
         throw std::bad_alloc();
     int16_t saved_state = HGetState(html);
