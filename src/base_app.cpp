@@ -64,13 +64,9 @@ bool base_app::has_128k_rom()
 bool base_app::has_gestalt()
 {
 #ifdef __m68k__
-    static bool initialized = false;
-    static bool has_gestalt;
-    if (!initialized)
-    {
+    static int16_t has_gestalt = -1;
+    if (-1 == has_gestalt)
         has_gestalt = has_128k_rom() && trap_available(_Gestalt);
-        initialized = true;
-    }
     return has_gestalt;
 #else
     return true;
@@ -79,32 +75,28 @@ bool base_app::has_gestalt()
 
 int16_t base_app::get_system_version()
 {
-    static bool initialized = false;
-    static int16_t system_version;
-    if (!initialized)
+    static int16_t system_version = -1;
+    if (-1 == system_version)
     {
         int32_t result;
         if (has_gestalt() && Gestalt(gestaltSystemVersion, &result) != noErr)
             system_version = LoWord(result);
         else
             system_version = 0;
-        initialized = true;
     }
     return system_version;
 }
 
 bool base_app::has_appearance()
 {
-    static bool initialized = false;
-    static bool has_appearance;
-    if (!initialized)
+    static int16_t has_appearance = -1;
+    if (-1 == has_appearance)
     {
         int32_t result;
         if (has_gestalt() && Gestalt(gestaltAppearanceAttr, &result) == noErr)
             has_appearance = LoWord(result) & (1 << gestaltAppearanceExists);
         else
             has_appearance = false;
-        initialized = true;
     }
     return has_appearance;
 }
