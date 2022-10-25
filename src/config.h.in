@@ -1,0 +1,15 @@
+// SPDX-FileCopyrightText: © 2022 Ryan C Schmidt <https://github.com/ryandesign>
+//
+// SPDX-License-Identifier: MIT
+
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define k_app_version_string "@PROJECT_VERSION@"
+#define k_app_version_major @PROJECT_VERSION_MAJOR@
+#define k_app_version_minor @PROJECT_VERSION_MINOR@
+#define k_app_version_patch @PROJECT_VERSION_PATCH@
+#define k_app_development_stage @PROJECT_DEVELOPMENT_STAGE@
+#define k_app_prerelease_revision @PROJECT_VERSION_TWEAK@
+
+#endif

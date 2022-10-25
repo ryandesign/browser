@@ -63,5 +63,8 @@
 #define r_TEXT_css 128
 #define r_TEXT_html 129
 
+#define r_vers_program 1
+#define r_vers_package 2
+
 #define r_WIND_browser 128
 #define r_WIND_about 129

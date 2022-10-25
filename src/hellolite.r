@@ -2,11 +2,14 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include "Script.r"
 #include "Types.r"
 
 #include "ResourceConstants.h"
+#include "config.h"
 
 #define k_app_name "hellolite"
+#define k_app_copyright_string "\0xA9 2022 Ryan C Schmidt"
 
 #define k_about_window_left 40
 #define k_about_window_top 40
@@ -285,6 +288,26 @@ resource 'STR#' (r_STRx_menu_items, preload, purgeable) {
 		"Collapse",
 		"Expand"
 	}
+};
+
+resource 'vers' (r_vers_program, purgeable) {
+	k_app_version_major,
+	(k_app_version_minor << 4) | k_app_version_patch,
+	k_app_development_stage,
+	k_app_prerelease_revision,
+	verUS,
+	k_app_version_string,
+	k_app_version_string ", " k_app_copyright_string
+};
+
+resource 'vers' (r_vers_package, purgeable) {
+	k_app_version_major,
+	(k_app_version_minor << 4) | k_app_version_patch,
+	k_app_development_stage,
+	k_app_prerelease_revision,
+	verUS,
+	k_app_version_string,
+	k_app_name " " k_app_version_string
 };
 
 resource 'WIND' (r_WIND_browser, purgeable) {

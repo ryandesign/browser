@@ -2,7 +2,9 @@
 #
 # SPDX-License-Identifier: MIT
 
-set(REZ_INCLUDE_PATH "${hellolite_SOURCE_DIR}/include;${REZ_INCLUDE_PATH}")
+configure_file(config.h.in config.h @ONLY)
+
+set(REZ_INCLUDE_PATH "${CMAKE_CURRENT_BINARY_DIR};${hellolite_SOURCE_DIR}/include;${REZ_INCLUDE_PATH}")
 
 set(app_SOURCES
     about_window.cpp
