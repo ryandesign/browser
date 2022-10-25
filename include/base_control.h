@@ -21,6 +21,7 @@ class base_control
         bool is_visible();
         void show();
         void hide();
+        OSErr set_data(ControlPartCode part, ResType tag, size_t size, void const* data);
         void window_did_resize(int16_t dx, int16_t dy);
 
     protected:

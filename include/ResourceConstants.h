@@ -18,6 +18,7 @@
 #define r_CNTL_web_view 134
 #define r_CNTL_horizontal_scroll_bar 135
 #define r_CNTL_vertical_scroll_bar 136
+#define r_CNTL_about_text 192
 
 #define r_DITL_fatal_error 128
 
@@ -59,6 +60,9 @@
 #define r_STRx_menu_items 129
 #define k_collapse 1
 #define k_expand 2
+
+#define r_STRx_about 130
+#define i_app_name 1
 
 #define r_TEXT_css 128
 #define r_TEXT_html 129

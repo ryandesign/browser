@@ -79,6 +79,11 @@ void base_control::hide()
     HideControl(m_control);
 }
 
+OSErr base_control::set_data(ControlPartCode part, ResType tag, size_t size, void const* data)
+{
+    return SetControlData(m_control, part, tag, size, data);
+}
+
 void base_control::window_did_resize(int16_t dx, int16_t dy)
 {
     bool was_visible = is_visible();

@@ -18,6 +18,12 @@
 #define k_about_window_right (k_about_window_left + k_about_window_width)
 #define k_about_window_bottom (k_about_window_top + k_about_window_height)
 
+#define k_dialog_padding 10
+#define k_about_text_left k_dialog_padding
+#define k_about_text_top k_dialog_padding
+#define k_about_text_right (k_about_window_width - k_dialog_padding)
+#define k_about_text_bottom (k_about_window_height - k_dialog_padding)
+
 #define k_window_left 40
 #define k_window_top 40
 #define k_window_width 200
@@ -174,6 +180,17 @@ resource 'CNTL' (r_CNTL_web_view, purgeable) {
 	""
 };
 
+resource 'CNTL' (r_CNTL_about_text, purgeable) {
+	{k_about_text_top, k_about_text_left, k_about_text_bottom, k_about_text_right},
+	0,
+	visible,
+	0,
+	0,
+	kControlStaticTextProc,
+	k_resize_horizontally | k_resize_vertically,
+	""
+};
+
 resource 'DITL' (r_DITL_fatal_error) {
 	{
 		{84, 316, 104, 374},
@@ -287,6 +304,12 @@ resource 'STR#' (r_STRx_menu_items, preload, purgeable) {
 	{
 		"Collapse",
 		"Expand"
+	}
+};
+
+resource 'STR#' (r_STRx_about, purgeable) {
+	{
+		k_app_name
 	}
 };
 

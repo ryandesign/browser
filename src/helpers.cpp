@@ -5,6 +5,7 @@
 #include "helpers.h"
 
 #include <cstdio>
+#include <string>
 
 bool is_desk_accessory_window(WindowPtr window)
 {
@@ -22,6 +23,11 @@ int16_t rect_height(Rect const& rect) {
 
 int16_t rect_width(Rect const& rect) {
     return rect.right - rect.left;
+}
+
+std::string& pappend(std::string& dst, ConstStr255Param src)
+{
+    return dst.append(reinterpret_cast<const char *>(&src[1]), src[0]);
 }
 
 void debugprintf(char const *format, ...)
