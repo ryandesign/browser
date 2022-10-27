@@ -307,7 +307,7 @@ void base_app::close_window(WindowRecord& window)
     else if (base_window *window_obj = base_window::get_from_window(window))
     {
         if (window_obj->should_close())
-            delete window_obj;
+            window_obj->close();
     }
     else
         DisposeWindow(reinterpret_cast<WindowPtr>(&window));

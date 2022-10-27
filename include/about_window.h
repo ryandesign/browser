@@ -14,7 +14,7 @@ class about_window : public base_window
     public:
         about_window();
         ~about_window();
-        bool should_close() override;
+        void close() override;
 
     private:
         root_control m_root_control;

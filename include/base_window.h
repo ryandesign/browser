@@ -36,6 +36,7 @@ class base_window
         virtual void did_zoom(int16_t dx, int16_t dy, int16_t in_or_out);
         virtual void update(EventRecord const& event);
         virtual bool should_close();
+        virtual void close();
         void select();
         void show();
         void hide();

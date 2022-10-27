@@ -106,6 +106,11 @@ bool base_window::should_close()
     return true;
 }
 
+void base_window::close()
+{
+    delete this;
+}
+
 void base_window::select()
 {
     SelectWindow(reinterpret_cast<WindowPtr>(&m_window));

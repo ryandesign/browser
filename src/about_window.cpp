@@ -43,8 +43,7 @@ about_window::~about_window()
 {
 }
 
-bool about_window::should_close()
+void about_window::close()
 {
     hide();
-    return false;
 }
