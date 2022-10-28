@@ -5,4 +5,5 @@
 *.html
 *.orig
 *.patch
+.vscode
 build
