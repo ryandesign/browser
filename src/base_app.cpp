@@ -309,19 +309,14 @@ void base_app::on_update_event(EventRecord const& event)
     if (WindowPtr window = reinterpret_cast<WindowPtr>(event.message))
     {
         BeginUpdate(window);
-        GrafPtr saved_port;
-        GetPort(&saved_port);
-        SetPort(window);
         if (base_window *window_obj = base_window::get_from_window(window))
-            window_obj->update(event);
-        UpdateControls(window, window->visRgn);
-        if (!machine::has_appearance())
         {
-            // TODO: set clip to grow box region
-            DrawGrowIcon(window);
-            // TODO: restore clip
+            GrafPtr saved_port;
+            GetPort(&saved_port);
+            SetPort(window);
+            window_obj->update(event);
+            SetPort(saved_port);
         }
-        SetPort(saved_port);
         EndUpdate(window);
     }
 }

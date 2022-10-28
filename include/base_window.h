@@ -35,6 +35,9 @@ class base_window
         virtual void did_resize(int16_t dx, int16_t dy);
         virtual void did_zoom(int16_t dx, int16_t dy, int16_t in_or_out);
         virtual void update(EventRecord const& event);
+        virtual bool has_grow_icon();
+        virtual void get_grow_icon_region(RgnHandle rgn);
+        virtual void draw_grow_icon();
         virtual bool should_close();
         virtual void close();
         void select();
@@ -47,6 +50,7 @@ class base_window
     private:
         static constexpr intptr_t k_move_to_front = -1L;
         static constexpr int16_t k_object_window_kind = 0x4242;
+        int16_t m_procid;
 };
 
 #endif

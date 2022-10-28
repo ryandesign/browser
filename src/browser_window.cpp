@@ -59,5 +59,6 @@ void browser_window::did_zoom(int16_t dx, int16_t dy, int16_t in_or_out)
 
 void browser_window::update(EventRecord const& event)
 {
+    base_window::update(event);
     m_first_tab.update(event);
 }

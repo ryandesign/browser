@@ -4,12 +4,31 @@
 
 #include "base_window.h"
 
+#include <Controls.h>
+#include <Quickdraw.h>
+#include <Resources.h>
 #include <new>
 
+#include "machine.h"
 //#include "oserr_exception.h"
+
+struct wind {
+    Rect bounds;
+    int16_t procid;
+    // More fields we don't care about.
+};
+typedef wind *wind_ptr;
+typedef wind **wind_handle;
 
 base_window::base_window(int16_t resource_id)
 {
+    // I can't find a way to get the procid after the window has been created
+    // so I load the resource manually and extract the procid from it before
+    // creating the window.
+    wind_handle wind = reinterpret_cast<wind_handle>(Get1Resource('WIND', resource_id));
+    if (!wind)
+        throw std::bad_alloc();
+    m_procid = (**wind).procid;
     if (!GetNewCWindow(resource_id, &m_window, reinterpret_cast<WindowPtr>(k_move_to_front)))
         throw std::bad_alloc()/*oserr_exception(memFullErr)*/;
     m_window.windowKind = k_object_window_kind;
@@ -102,6 +121,71 @@ void base_window::did_zoom(int16_t dx, int16_t dy, int16_t in_or_out)
 
 void base_window::update(EventRecord const& event)
 {
+    UpdateControls(reinterpret_cast<WindowPtr>(&m_window), m_window.port.visRgn);
+    draw_grow_icon();
+}
+
+bool base_window::has_grow_icon()
+{
+    bool has_grow;
+    uint32_t features;
+    if (machine::has_appearance() && noErr == GetWindowFeatures(reinterpret_cast<WindowPtr>(&m_window), &features))
+        has_grow = features & kWindowCanGrow;
+    else
+        switch (m_procid)
+        {
+            case documentProc:
+            case zoomDocProc:
+            case floatGrowProc:
+            case floatZoomGrowProc:
+            case floatSideGrowProc:
+            case floatSideZoomGrowProc:
+                has_grow = true;
+                break;
+            default:
+                has_grow = false;
+        }
+    return has_grow;
+}
+
+void base_window::get_grow_icon_region(RgnHandle rgn)
+{
+    if (machine::has_appearance() && noErr == GetWindowRegion(reinterpret_cast<WindowPtr>(&m_window), kWindowGrowRgn, rgn))
+    {
+        Point offset;
+        SetPt(&offset, 0, 0);
+        LocalToGlobal(&offset);
+        OffsetRgn(rgn, -offset.h, -offset.v);
+    }
+    else
+    {
+        Rect rect;
+        rect.right = m_window.port.portRect.right + 1;
+        rect.bottom = m_window.port.portRect.bottom + 1;
+        rect.left = rect.right - 16;
+        rect.top = rect.bottom - 16;
+        RectRgn(rgn, &rect);
+    }
+}
+
+void base_window::draw_grow_icon()
+{
+    // When using Appearance windows directly, calling DrawGrowIcon is not
+    // necessary but is presumably not harmful. When using non-Appearance
+    // windows in mapping mode, DrawGrowIcon must be called once but it's
+    // presumably not harmful to call it every time.
+    if (has_grow_icon())
+        if (RgnHandle grow_icon_region = NewRgn())
+        {
+            // Mask out everything but the grow icon itself to avoid drawing the
+            // possibly undesirable scroll bar delimiting lines.
+            get_grow_icon_region(grow_icon_region);
+            RgnHandle saved_clip_region = m_window.port.clipRgn;
+            m_window.port.clipRgn = grow_icon_region;
+            DrawGrowIcon(reinterpret_cast<WindowPtr>(&m_window));
+            m_window.port.clipRgn = saved_clip_region;
+            DisposeRgn(grow_icon_region);
+        }
 }
 
 bool base_window::should_close()
