@@ -8,7 +8,6 @@
 #include <Events.h>
 #include <MacTypes.h>
 #include <MacWindows.h>
-#include <Patches.h>
 
 // TODO: Reevaluate visibility in all classes. Probably make most things private.
 class base_app
@@ -17,13 +16,6 @@ class base_app
         base_app(int32_t extra_stack_bytes = 0, int16_t extra_master_pointers = 0);
         virtual ~base_app();
         void run();
-        bool has_128k_rom();
-        bool has_gestalt();
-        int16_t get_system_version();
-        bool has_appearance();
-        bool trap_available(uint16_t trap);
-        TrapType get_trap_type(uint16_t trap);
-        int16_t get_num_toolbox_traps();
         OSErr load_menu_bar(int16_t mbar_id);
         void consume_event();
         void on_event(EventRecord const& event);

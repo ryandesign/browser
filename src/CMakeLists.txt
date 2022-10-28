@@ -16,6 +16,7 @@ set(app_SOURCES
     browser_window.cpp
     hellolite.r
     helpers.cpp
+    machine.cpp
     main.cpp
     root_control.cpp
 )

@@ -10,17 +10,15 @@
 #include <Dialogs.h>
 #include <DiskInit.h>
 #include <Fonts.h>
-#include <Gestalt.h>
-#include <LowMem.h>
 #include <MacMemory.h>
 #include <Menus.h>
-#include <Processes.h>
 #include <Quickdraw.h>
+#include <Resources.h>
 #include <ToolUtils.h>
-#include <Traps.h>
 
 #include "base_window.h"
 #include "helpers.h"
+#include "machine.h"
 
 base_app::base_app(int32_t extra_stack_bytes, int16_t extra_master_pointers)
     : m_done(false), m_is_in_foreground(true), m_menu_unhighlight_ticks(0)
@@ -38,7 +36,7 @@ base_app::base_app(int32_t extra_stack_bytes, int16_t extra_master_pointers)
     InitCursor();
     GetDateTime(reinterpret_cast<uint32_t *>(&qd.randSeed));
 
-    if (has_appearance())
+    if (machine::has_appearance())
         RegisterAppearanceClient();
 }
 
@@ -50,78 +48,6 @@ void base_app::run()
 {
     while (!m_done)
         try_consume_event();
-}
-
-bool base_app::has_128k_rom()
-{
-#ifdef __m68k__
-    return LMGetROM85() >= 0;
-#else
-    return true;
-#endif
-}
-
-bool base_app::has_gestalt()
-{
-#ifdef __m68k__
-    static int16_t has_gestalt = -1;
-    if (-1 == has_gestalt)
-        has_gestalt = has_128k_rom() && trap_available(_Gestalt);
-    return has_gestalt;
-#else
-    return true;
-#endif
-}
-
-int16_t base_app::get_system_version()
-{
-    static int16_t system_version = -1;
-    if (-1 == system_version)
-    {
-        int32_t result;
-        if (has_gestalt() && Gestalt(gestaltSystemVersion, &result) != noErr)
-            system_version = LoWord(result);
-        else
-            system_version = 0;
-    }
-    return system_version;
-}
-
-bool base_app::has_appearance()
-{
-    static int16_t has_appearance = -1;
-    if (-1 == has_appearance)
-    {
-        int32_t result;
-        if (has_gestalt() && Gestalt(gestaltAppearanceAttr, &result) == noErr)
-            has_appearance = LoWord(result) & (1 << gestaltAppearanceExists);
-        else
-            has_appearance = false;
-    }
-    return has_appearance;
-}
-
-bool base_app::trap_available(uint16_t trap)
-{
-    TrapType trap_type = get_trap_type(trap);
-    if (ToolTrap == trap_type) {
-        trap &= 0x03FF;
-        if (trap >= get_num_toolbox_traps())
-            trap = _Unimplemented;
-    }
-    return NGetTrapAddress(trap, trap_type) != NGetTrapAddress(_Unimplemented, ToolTrap);
-}
-
-TrapType base_app::get_trap_type(uint16_t trap)
-{
-    return (trap & 0x0800) ? ToolTrap : OSTrap;
-}
-
-int16_t base_app::get_num_toolbox_traps()
-{
-    if (NGetTrapAddress(_InitGraf, ToolTrap) == NGetTrapAddress(0xAA6E, ToolTrap))
-        return 0x200;
-    return 0x400;
 }
 
 typedef struct mbar {
@@ -340,7 +266,7 @@ void base_app::on_key_down_event(EventRecord const& event)
         {
             adjust_menu_items();
             int32_t menu_result;
-            if (has_appearance())
+            if (machine::has_appearance())
                 menu_result = MenuEvent(&event);
             else
                 menu_result = MenuKey(event.message & charCodeMask);
@@ -389,7 +315,7 @@ void base_app::on_update_event(EventRecord const& event)
         if (base_window *window_obj = base_window::get_from_window(window))
             window_obj->update(event);
         UpdateControls(window, window->visRgn);
-        if (!has_appearance())
+        if (!machine::has_appearance())
         {
             // TODO: set clip to grow box region
             DrawGrowIcon(window);

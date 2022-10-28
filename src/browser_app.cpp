@@ -15,11 +15,12 @@
 #include "about_window.h"
 #include "browser_window.h"
 #include "helpers.h"
+#include "machine.h"
 //#include "oserr_exception.h"
 
 browser_app::browser_app() : base_app()
 {
-    if (!has_appearance())
+    if (!machine::has_appearance())
         fatal_error_alert(e_no_appearance);
 
     if (load_menu_bar(r_MBAR) != noErr)
@@ -50,7 +51,7 @@ browser_app::~browser_app()
 void browser_app::fatal_error_alert(int16_t error_number)
 {
 #ifdef __m68k__
-    bool has_autopositioning = get_system_version() >= 0x0700;
+    bool has_autopositioning = machine::get_system_version() >= 0x0700;
     AlertTHndl alrt;
     Point offset;
     if (!has_autopositioning)
