@@ -18,6 +18,9 @@ base_window::base_window(int16_t resource_id)
 
 base_window::~base_window()
 {
+    // Use CloseWindow, not DisposeWindow, because we allocated the memory for
+    // the window record (within this object) so we don't want Mac OS to try to
+    // dispose it for us.
     CloseWindow(reinterpret_cast<WindowPtr>(&m_window));
 }
 
