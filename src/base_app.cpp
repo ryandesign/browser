@@ -50,10 +50,10 @@ void base_app::run()
         try_consume_event();
 }
 
-typedef struct mbar {
+struct mbar {
     int16_t length;
     int16_t resource_id[];
-} mbar;
+};
 typedef mbar *mbar_ptr;
 typedef mbar **mbar_handle;
 
