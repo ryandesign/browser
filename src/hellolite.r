@@ -64,7 +64,7 @@
 #define k_address_bar_bottom (k_home_button_bottom - k_text_field_inset)
 
 #define k_web_view_left 0
-#define k_web_view_top (k_header_height)
+#define k_web_view_top (k_header_height + 1)
 #define k_web_view_right (k_window_width - 15)
 #define k_web_view_bottom (k_window_height - 15)
 
