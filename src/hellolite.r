@@ -42,7 +42,7 @@
 #define k_back_button_right (k_back_button_left + k_header_button_width)
 #define k_back_button_bottom (k_back_button_top + k_header_button_height)
 
-#define k_forward_button_left (k_back_button_right)
+#define k_forward_button_left (k_back_button_right - 1)
 #define k_forward_button_top (k_back_button_top)
 #define k_forward_button_right (k_forward_button_left + k_header_button_width)
 #define k_forward_button_bottom (k_back_button_bottom)
