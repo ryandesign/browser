@@ -24,7 +24,7 @@ class base_app
         void content_click(WindowRecord const& window, EventRecord const& event);
         void grow_window(WindowRecord& window, EventRecord const& event);
         void close_window(WindowRecord& window);
-        void zoom_window(WindowRecord& window, int16_t in_or_out);
+        void zoom_window(WindowRecord& window, int16_t part);
         void on_key_down_event(EventRecord const& event);
         void on_activate_event(EventRecord const& event);
         void activate_window(WindowRecord& window, bool activate, EventRecord const& event);

@@ -19,8 +19,7 @@ class browser_window : public base_window
         ~browser_window();
         int16_t get_minimum_height() override;
         int16_t get_minimum_width() override;
-        void did_resize(int16_t dx, int16_t dy) override;
-        void did_zoom(int16_t dx, int16_t dy, int16_t in_or_out) override;
+        void did_resize(int16_t dx, int16_t dy, int16_t part) override;
         void update(EventRecord const& event) override;
 
     private:

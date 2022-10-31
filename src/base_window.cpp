@@ -111,11 +111,7 @@ void base_window::on_menu(int16_t menu, int16_t item)
 {
 }
 
-void base_window::did_resize(int16_t dx, int16_t dy)
-{
-}
-
-void base_window::did_zoom(int16_t dx, int16_t dy, int16_t in_or_out)
+void base_window::did_resize(int16_t dx, int16_t dy, int16_t part)
 {
 }
 

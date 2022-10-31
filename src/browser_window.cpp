@@ -40,7 +40,7 @@ int16_t browser_window::get_minimum_width()
     return 128;
 }
 
-void browser_window::did_resize(int16_t dx, int16_t dy)
+void browser_window::did_resize(int16_t dx, int16_t dy, int16_t part)
 {
     ControlHandle control = reinterpret_cast<ControlHandle>(m_window.controlList);
     while (control)
@@ -50,11 +50,6 @@ void browser_window::did_resize(int16_t dx, int16_t dy)
             control_obj->window_did_resize(dx, dy);
         control = (**control).nextControl;
     }
-}
-
-void browser_window::did_zoom(int16_t dx, int16_t dy, int16_t in_or_out)
-{
-    did_resize(dx, dy);
 }
 
 void browser_window::update(EventRecord const& event)

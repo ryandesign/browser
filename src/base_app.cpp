@@ -222,7 +222,7 @@ void base_app::grow_window(WindowRecord& window, EventRecord const& event)
         int16_t dy = new_height - rect_height(window.port.portRect);
         SizeWindow(reinterpret_cast<WindowPtr>(&window), new_width, new_height, true);
         if (window_obj)
-            window_obj->did_resize(dx, dy);
+            window_obj->did_resize(dx, dy, inGrow);
     }
 }
 
@@ -240,7 +240,7 @@ void base_app::close_window(WindowRecord& window)
     adjust_menu_bar();
 }
 
-void base_app::zoom_window(WindowRecord& window, int16_t in_or_out)
+void base_app::zoom_window(WindowRecord& window, int16_t part)
 {
     GrafPtr saved_port;
     GetPort(&saved_port);
@@ -248,12 +248,12 @@ void base_app::zoom_window(WindowRecord& window, int16_t in_or_out)
     EraseRect(&window.port.portRect);
     int16_t dx = rect_width(window.port.portRect);
     int16_t dy = rect_height(window.port.portRect);
-    ZoomWindow(reinterpret_cast<WindowPtr>(&window), in_or_out, true);
+    ZoomWindow(reinterpret_cast<WindowPtr>(&window), part, true);
     if (base_window *window_obj = base_window::get_from_window(window))
     {
         dx = rect_width(window.port.portRect) - dx;
         dy = rect_height(window.port.portRect) - dy;
-        window_obj->did_zoom(dx, dy, in_or_out);
+        window_obj->did_resize(dx, dy, part);
     }
     SetPort(saved_port);
 }

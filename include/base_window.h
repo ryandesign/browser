@@ -32,8 +32,7 @@ class base_window
         virtual void idle(EventRecord const& event);
         virtual void on_key_down(EventRecord const& event);
         virtual void on_menu(int16_t menu, int16_t item);
-        virtual void did_resize(int16_t dx, int16_t dy);
-        virtual void did_zoom(int16_t dx, int16_t dy, int16_t in_or_out);
+        virtual void did_resize(int16_t dx, int16_t dy, int16_t part);
         virtual void update(EventRecord const& event);
         virtual bool has_grow_icon();
         virtual void get_grow_icon_region(RgnHandle rgn);
