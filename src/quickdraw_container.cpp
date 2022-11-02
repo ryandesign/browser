@@ -138,7 +138,7 @@ void quickdraw_container::import_css(litehtml::tstring& text, const litehtml::ts
 {
 }
 
-void quickdraw_container::set_clip(const litehtml::position& pos, const litehtml::border_radiuses& bdr_radius, bool valid_x, bool valid_y)
+void quickdraw_container::set_clip(const litehtml::position& pos, const litehtml::border_radiuses& radiuses, bool valid_x, bool valid_y)
 {
 }
 

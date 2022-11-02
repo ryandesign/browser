@@ -38,7 +38,7 @@ class quickdraw_container : public litehtml::document_container
         void set_cursor(const litehtml::tchar_t *cursor);
         void transform_text(litehtml::tstring& text, litehtml::text_transform tt);
         void import_css(litehtml::tstring& text, const litehtml::tstring& url, litehtml::tstring& base_url);
-        void set_clip(const litehtml::position& pos, const litehtml::border_radiuses& bdr_radius, bool valid_x, bool valid_y);
+        void set_clip(const litehtml::position& pos, const litehtml::border_radiuses& radiuses, bool valid_x, bool valid_y);
         void del_clip();
         std::shared_ptr<litehtml::element> create_element(const litehtml::tchar_t *tag_name, const litehtml::string_map &attributes, const std::shared_ptr<litehtml::document> &doc);
         void get_media_features(litehtml::media_features& media) const;
