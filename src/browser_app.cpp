@@ -124,13 +124,10 @@ void browser_app::oserr_alert(OSErr err)
 void browser_app::about()
 {
     static about_window *window_obj = nullptr;
-    if (window_obj)
-    {
-        window_obj->show();
-        window_obj->select();
-    }
-    else
+    if (!window_obj)
         window_obj = new about_window();
+    window_obj->show();
+    window_obj->select();
     adjust_menu_bar();
 }
 

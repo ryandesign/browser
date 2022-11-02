@@ -36,7 +36,6 @@ about_window::about_window()
         ReleaseResource(vers);
     }
     m_text.set_data(kControlNoPart, kControlStaticTextTextTag, text.size(), text.data());
-    show();
 }
 
 about_window::~about_window()
