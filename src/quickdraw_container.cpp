@@ -83,11 +83,11 @@ void quickdraw_container::draw_list_marker(litehtml::uint_ptr hdc, const litehtm
 {
 }
 
-void quickdraw_container::load_image(const litehtml::tchar_t *src, const litehtml::tchar_t *baseurl, bool redraw_on_ready)
+void quickdraw_container::load_image(const litehtml::tchar_t *src, const litehtml::tchar_t *base_url, bool redraw_on_ready)
 {
 }
 
-void quickdraw_container::get_image_size(const litehtml::tchar_t *src, const litehtml::tchar_t *baseurl, litehtml::size& sz)
+void quickdraw_container::get_image_size(const litehtml::tchar_t *src, const litehtml::tchar_t *base_url, litehtml::size& sz)
 {
 }
 
@@ -134,7 +134,7 @@ void quickdraw_container::transform_text(litehtml::tstring& text, litehtml::text
     }
 }
 
-void quickdraw_container::import_css(litehtml::tstring& text, const litehtml::tstring& url, litehtml::tstring& baseurl)
+void quickdraw_container::import_css(litehtml::tstring& text, const litehtml::tstring& url, litehtml::tstring& base_url)
 {
 }
 
