@@ -22,6 +22,12 @@
 
 #define r_DITL_fatal_error 128
 
+#define r_icsx_back 128
+#define r_icsx_forward 129
+#define r_icsx_home 130
+#define r_icsx_reload 131
+#define r_icsx_stop 132
+
 #define r_MBAR 128
 
 #define r_MENU_apple 128

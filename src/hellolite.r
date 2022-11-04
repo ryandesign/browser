@@ -95,8 +95,8 @@ resource 'CNTL' (r_CNTL_back_button, purgeable) {
 	{k_back_button_top, k_back_button_left, k_back_button_bottom, k_back_button_right},
 	0,
 	visible,
-	0,
-	0,
+	r_icsx_back,
+	kControlBehaviorPushbutton << 8 | kControlContentIconSuiteRes,
 	kControlBevelButtonSmallBevelProc,
 	0,
 	""
@@ -106,8 +106,8 @@ resource 'CNTL' (r_CNTL_forward_button, purgeable) {
 	{k_forward_button_top, k_forward_button_left, k_forward_button_bottom, k_forward_button_right},
 	0,
 	visible,
-	0,
-	0,
+	r_icsx_forward,
+	kControlBehaviorPushbutton << 8 | kControlContentIconSuiteRes,
 	kControlBevelButtonSmallBevelProc,
 	0,
 	""
@@ -117,20 +117,19 @@ resource 'CNTL' (r_CNTL_home_button, purgeable) {
 	{k_home_button_top, k_home_button_left, k_home_button_bottom, k_home_button_right},
 	0,
 	visible,
-	0,
-	0,
+	r_icsx_home,
+	kControlBehaviorPushbutton << 8 | kControlContentIconSuiteRes,
 	kControlBevelButtonSmallBevelProc,
 	0,
 	""
 };
 
-
 resource 'CNTL' (r_CNTL_reload_button, purgeable) {
 	{k_reload_button_top, k_reload_button_left, k_reload_button_bottom, k_reload_button_right},
 	0,
 	visible,
-	0,
-	0,
+	r_icsx_reload,
+	kControlBehaviorPushbutton << 8 | kControlContentIconSuiteRes,
 	kControlBevelButtonSmallBevelProc,
 	k_move_horizontally,
 	""
@@ -203,6 +202,51 @@ resource 'DITL' (r_DITL_fatal_error) {
 			disabled,
 			"^0"
 		}
+	}
+};
+
+resource 'ics#' (r_icsx_back, purgeable) {
+	{
+		$"0000 0000 0000 0060 00E0 01C0 0380 0700"
+		$"0700 0380 01C0 00E0 0060",
+		$"0000 0000 0000 0060 00E0 01C0 0380 0700"
+		$"0700 0380 01C0 00E0 0060"
+	}
+};
+
+resource 'ics#' (r_icsx_forward, purgeable) {
+	{
+		$"0000 0000 0000 0600 0700 0380 01C0 00E0"
+		$"00E0 01C0 0380 0700 06",
+		$"0000 0000 0000 0600 0700 0380 01C0 00E0"
+		$"00E0 01C0 0380 0700 06"
+	}
+};
+
+resource 'ics#' (r_icsx_home, purgeable) {
+	{
+		$"0000 0000 0000 01B0 03F0 07F0 0E70 1C38"
+		$"1818 0990 0990 0990 0FF0",
+		$"0000 0000 0000 01B0 03F0 07F0 0E70 1C38"
+		$"1818 0990 0990 0990 0FF0"
+	}
+};
+
+resource 'ics#' (r_icsx_reload, purgeable) {
+	{
+		$"0000 0000 0000 03C8 0FF8 0C38 1878 1800"
+		$"1800 1818 0C30 0FF0 03C0",
+		$"0000 0000 0000 03C8 0FF8 0C38 1878 1800"
+		$"1800 1818 0C30 0FF0 03C0"
+	}
+};
+
+resource 'ics#' (r_icsx_stop, purgeable) {
+	{
+		$"0000 0000 0000 1818 1C38 0E70 07E0 03C0"
+		$"03C0 07E0 0E70 1C38 1818",
+		$"0000 0000 0000 1818 1C38 0E70 07E0 03C0"
+		$"03C0 07E0 0E70 1C38 1818"
 	}
 };
 
