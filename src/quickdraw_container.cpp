@@ -43,24 +43,24 @@ litehtml::uint_ptr quickdraw_container::create_font(const litehtml::tchar_t *fac
     fm->descent = metrics.descent;
     // TODO: find real x-height
     fm->x_height = fm->height / 2;
-    return (litehtml::uint_ptr)font;
+    return reinterpret_cast<litehtml::uint_ptr>(font);
 }
 
 void quickdraw_container::delete_font(litehtml::uint_ptr hFont)
 {
-    quickdraw_font *font = (quickdraw_font *)hFont;
+    quickdraw_font *font = reinterpret_cast<quickdraw_font *>(hFont);
     delete font;
 }
 
 int quickdraw_container::text_width(const litehtml::tchar_t *text, litehtml::uint_ptr hFont)
 {
-    quickdraw_font *font = (quickdraw_font *)hFont;
+    quickdraw_font *font = reinterpret_cast<quickdraw_font *>(hFont);
     return font->width(text);
 }
 
 void quickdraw_container::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t *text, litehtml::uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos)
 {
-    quickdraw_font *font = (quickdraw_font *)hFont;
+    quickdraw_font *font = reinterpret_cast<quickdraw_font *>(hFont);
     font->draw(text, pos);
 }
 
