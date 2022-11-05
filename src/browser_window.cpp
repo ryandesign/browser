@@ -23,7 +23,6 @@ browser_window::browser_window()
       m_horizontal_scroll_bar(r_CNTL_horizontal_scroll_bar, m_window),
       m_vertical_scroll_bar(r_CNTL_vertical_scroll_bar, m_window)
 {
-    show();
 }
 
 browser_window::~browser_window()

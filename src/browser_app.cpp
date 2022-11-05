@@ -136,16 +136,23 @@ void browser_app::on_file_menu(int16_t menu_item)
     switch (menu_item)
     {
         case i_new_window:
-            new browser_window();
+        {
+            browser_window *window_obj = new browser_window();
+            window_obj->show();
             adjust_menu_bar();
             break;
+        }
         case i_close_window:
+        {
             if (WindowPtr window = FrontWindow())
                 close_window(*reinterpret_cast<WindowPeek>(window));
             break;
+        }
         case i_quit:
+        {
             on_quit();
             break;
+        }
     }
 }
 
