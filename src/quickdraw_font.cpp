@@ -28,11 +28,14 @@ quickdraw_font::quickdraw_font(int16_t id, int16_t size, StyleParameter style)
 
 quickdraw_font::~quickdraw_font()
 {
+    GrafPtr saved_port;
+    GetPort(&saved_port);
+    ClosePort(&m_port);
 }
 
 void quickdraw_font::draw(const litehtml::tchar_t *text, const litehtml::position& pos)
 {
-    setUpPort();
+    set_port_font();
     MoveTo(pos.x, pos.y + m_metrics.ascent);
 //    MoveTo(pos.x, pos.y + pos.height - m_metrics.descent);
     DrawText(text, 0, strlen(text));
@@ -45,8 +48,12 @@ void quickdraw_font::draw(const litehtml::tchar_t *text, const litehtml::positio
 
 int16_t quickdraw_font::width(const litehtml::tchar_t *text)
 {
-    setUpPort();
-    return TextWidth(text, 0, strlen(text));
+    GrafPtr saved_port;
+    GetPort(&saved_port);
+    SetPort(&m_port);
+    int16_t width = TextWidth(text, 0, strlen(text));
+    SetPort(saved_port);
+    return width;
 }
 
 FontInfo& quickdraw_font::metrics()
@@ -56,11 +63,15 @@ FontInfo& quickdraw_font::metrics()
 
 void quickdraw_font::construct()
 {
-    setUpPort();
+    GrafPtr saved_port;
+    GetPort(&saved_port);
+    OpenPort(&m_port);
+    set_port_font();
     GetFontInfo(&m_metrics);
+    SetPort(saved_port);
 }
 
-void quickdraw_font::setUpPort()
+void quickdraw_font::set_port_font()
 {
     TextFont(m_id);
     TextSize(m_size);

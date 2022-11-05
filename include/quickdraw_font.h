@@ -31,9 +31,10 @@ class quickdraw_font
         int16_t m_size;
         StyleParameter m_style;
         FontInfo m_metrics;
+        GrafPort m_port;
 
         void construct();
-        void setUpPort();
+        void set_port_font();
 };
 
 #endif
