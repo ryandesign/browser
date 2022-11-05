@@ -151,10 +151,8 @@ void base_app::on_idle_event(EventRecord const& event)
 
 void base_app::on_mouse_down_event(EventRecord const& event)
 {
-    short part;
     WindowPtr window;
-
-    part = FindWindow(event.where, &window);
+    int16_t part = FindWindow(event.where, &window);
     switch (part)
     {
         case inMenuBar:

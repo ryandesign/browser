@@ -13,14 +13,14 @@
 // My headers
 #include "quickdraw_font.h"
 
-quickdraw_font::quickdraw_font(const char *name, short size, StyleParameter style)
+quickdraw_font::quickdraw_font(const char *name, int16_t size, StyleParameter style)
     : m_size(size), m_style(style)
 {
     getfnum(name, &m_id);
     construct();
 }
 
-quickdraw_font::quickdraw_font(short id, short size, StyleParameter style)
+quickdraw_font::quickdraw_font(int16_t id, int16_t size, StyleParameter style)
     : m_id(id), m_size(size), m_style(style)
 {
     construct();
@@ -43,7 +43,7 @@ void quickdraw_font::draw(const litehtml::tchar_t *text, const litehtml::positio
 */
 }
 
-short quickdraw_font::width(const litehtml::tchar_t *text)
+int16_t quickdraw_font::width(const litehtml::tchar_t *text)
 {
     setUpPort();
     return TextWidth(text, 0, strlen(text));
