@@ -15,7 +15,7 @@
 #define r_CNTL_home_button 131
 #define r_CNTL_reload_button 132
 #define r_CNTL_address_bar 133
-#define r_CNTL_web_view 134
+#define r_CNTL_browser 134
 #define r_CNTL_horizontal_scroll_bar 135
 #define r_CNTL_vertical_scroll_bar 136
 #define r_CNTL_about_text 192

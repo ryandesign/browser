@@ -4,14 +4,13 @@
 
 #include "browser_window.h"
 
+#include <Resources.h>
 #include "ResourceConstants.h"
-#include "base_control.h"
 #include "helpers.h"
-#include "root_control.h"
 
 browser_window::browser_window()
     : base_window(r_WIND_browser),
-      m_first_tab(m_window),
+      m_selected_document(std::make_shared<browser_document>()),
       m_root_control(m_window),
       m_header(r_CNTL_header, m_window),
       m_back_button(r_CNTL_back_button, m_window),
@@ -19,10 +18,21 @@ browser_window::browser_window()
       m_home_button(r_CNTL_home_button, m_window),
       m_reload_button(r_CNTL_reload_button, m_window),
       m_address_bar(r_CNTL_address_bar, m_window),
-      m_web_view(r_CNTL_web_view, m_window),
+      m_browser(r_CNTL_browser, m_window),
       m_horizontal_scroll_bar(r_CNTL_horizontal_scroll_bar, m_window),
       m_vertical_scroll_bar(r_CNTL_vertical_scroll_bar, m_window)
 {
+#ifdef USE_LITEHTML
+    Handle html = Get1Resource('TEXT', r_TEXT_html);
+    if (!html)
+        throw std::bad_alloc();
+    int16_t saved_state = HGetState(html);
+    HLock(html);
+    m_selected_document->set_html(*html, m_browser);
+    HSetState(html, saved_state);
+    m_browser.set_document(m_selected_document);
+    render_if_needed_and_update_scrollbars();
+#endif
 }
 
 browser_window::~browser_window()
@@ -41,18 +51,20 @@ int16_t browser_window::get_minimum_width()
 
 void browser_window::did_resize(int16_t dx, int16_t dy, int16_t part)
 {
-    ControlHandle control = reinterpret_cast<ControlHandle>(m_window.controlList);
-    while (control)
-    {
-        base_control *control_obj = base_control::get_from_control(control);
-        if (control_obj)
-            control_obj->window_did_resize(dx, dy);
-        control = (**control).nextControl;
-    }
+    base_window::did_resize(dx, dy, part);
+    render_if_needed_and_update_scrollbars();
 }
 
-void browser_window::update(EventRecord const& event)
+void browser_window::render_if_needed_and_update_scrollbars()
 {
-    base_window::update(event);
-    m_first_tab.update(event);
+    Rect rect = m_browser.get_rect();
+    int16_t width = rect_width(rect);
+    m_selected_document->render_if_needed(width);
+    Point dimensions = m_selected_document->get_dimensions();
+    dimensions.h -= width;
+    if (dimensions.h < 0) dimensions.h = 0;
+    dimensions.v -= rect_height(rect);
+    if (dimensions.v < 0) dimensions.v = 0;
+    m_vertical_scroll_bar.set_maximum(dimensions.v);
+    m_horizontal_scroll_bar.set_maximum(dimensions.h);
 }

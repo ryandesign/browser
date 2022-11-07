@@ -220,7 +220,13 @@ void base_app::grow_window(WindowRecord& window, EventRecord const& event)
         int16_t dy = new_height - rect_height(window.port.portRect);
         SizeWindow(reinterpret_cast<WindowPtr>(&window), new_width, new_height, true);
         if (window_obj)
+        {
+            GrafPtr saved_port;
+            GetPort(&saved_port);
+            SetPort(reinterpret_cast<WindowPtr>(&window));
             window_obj->did_resize(dx, dy, inGrow);
+            SetPort(saved_port);
+        }
     }
 }
 

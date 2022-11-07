@@ -42,6 +42,8 @@ class base_window
         void select();
         void show();
         void hide();
+        Rect const& get_rect() const;
+        void set_title(char const* const title);
 
     protected:
         WindowRecord m_window;

@@ -11,8 +11,8 @@
 #include <TextUtils.h>
 
 #include "ResourceConstants.h"
-#include "WebView.h"
 #include "about_window.h"
+#include "browser_document.h"
 #include "browser_window.h"
 #include "helpers.h"
 #include "machine.h"
@@ -32,7 +32,7 @@ browser_app::browser_app() : base_app()
         if (css)
         {
             HLock(css);
-            init_web_views(*css);
+            browser_document::set_default_css(*css);
             ReleaseResource(css);
         }
         else

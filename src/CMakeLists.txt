@@ -12,18 +12,19 @@ set(app_SOURCES
     base_control.cpp
     base_window.cpp
     browser_app.cpp
-    browser_tab.cpp
+    browser_control.cpp
+    browser_document.cpp
     browser_window.cpp
     hellolite.r
     helpers.cpp
     machine.cpp
     main.cpp
     root_control.cpp
+    user_control.cpp
 )
 
 if(USE_LITEHTML)
     list(APPEND app_SOURCES
-        WebView.cpp
         ${CMAKE_CURRENT_BINARY_DIR}/home.html.r
         ${CMAKE_CURRENT_BINARY_DIR}/master.css.r
         quickdraw_container.cpp

@@ -9,6 +9,7 @@
 #include <Resources.h>
 #include <new>
 
+#include "base_control.h"
 #include "machine.h"
 //#include "oserr_exception.h"
 
@@ -113,6 +114,14 @@ void base_window::on_menu(int16_t menu, int16_t item)
 
 void base_window::did_resize(int16_t dx, int16_t dy, int16_t part)
 {
+    ControlHandle control = reinterpret_cast<ControlHandle>(m_window.controlList);
+    while (control)
+    {
+        base_control *control_obj = base_control::get_from_control(control);
+        if (control_obj)
+            control_obj->window_did_resize(dx, dy);
+        control = (**control).nextControl;
+    }
 }
 
 void base_window::update(EventRecord const& event)
@@ -207,4 +216,14 @@ void base_window::show()
 void base_window::hide()
 {
     HideWindow(reinterpret_cast<WindowPtr>(&m_window));
+}
+
+Rect const& base_window::get_rect() const
+{
+    return m_window.port.portRect;
+}
+
+void base_window::set_title(char const* const title)
+{
+    setwtitle(reinterpret_cast<WindowPtr>(&m_window), title);
 }

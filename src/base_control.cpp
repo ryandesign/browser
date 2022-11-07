@@ -64,41 +64,97 @@ base_control::~base_control()
     DisposeControl(m_control);
 }
 
-bool base_control::is_visible()
+Rect const& base_control::get_rect() const
+{
+    return (**m_control).contrlRect;
+}
+
+base_window& base_control::get_window()
+{
+    return *base_window::get_from_window((**m_control).contrlOwner);
+}
+
+bool base_control::is_visible() const
 {
     return (**m_control).contrlVis;
 }
 
-void base_control::show()
+void base_control::show_and_inval()
+{
+    (**m_control).contrlVis = 0xFF;
+    InvalRect(&get_rect());
+}
+
+void base_control::show_and_draw()
 {
     ShowControl(m_control);
 }
 
-void base_control::hide()
+void base_control::hide_and_inval()
+{
+    (**m_control).contrlVis = 0;
+    InvalRect(&get_rect());
+}
+
+void base_control::hide_and_draw()
 {
     HideControl(m_control);
 }
 
-OSErr base_control::set_data(ControlPartCode part, ResType tag, size_t size, void const* data)
+int16_t base_control::get_maximum() const
+{
+    return GetControlMaximum(m_control);
+}
+
+void base_control::set_maximum(int16_t maximum)
+{
+    SetControlMaximum(m_control, maximum);
+}
+
+int16_t base_control::get_minimum() const
+{
+    return GetControlMinimum(m_control);
+}
+
+void base_control::set_minimum(int16_t minimum)
+{
+    SetControlMinimum(m_control, minimum);
+}
+
+int16_t base_control::get_value() const
+{
+    return GetControlValue(m_control);
+}
+
+void base_control::set_value(int16_t value)
+{
+    SetControlValue(m_control, value);
+}
+
+OSErr base_control::set_data(ControlPartCode part, ResType tag, size_t size, void const *data)
 {
     return SetControlData(m_control, part, tag, size, data);
 }
 
 void base_control::window_did_resize(int16_t dx, int16_t dy)
 {
-    bool was_visible = is_visible();
-    if (was_visible)
-        hide();
-    if (m_resize_horizontally)
-        (**m_control).contrlRect.right += dx;
-    if (m_resize_vertically)
-        (**m_control).contrlRect.bottom += dy;
-    if (!m_move_horizontally)
-        dx = 0;
-    if (!m_move_vertically)
-        dy = 0;
-    if (dx || dy)
-        OffsetRect(&(**m_control).contrlRect, dx, dy);
-    if (was_visible)
-        show();
+    if ((dx && (m_move_horizontally || m_resize_horizontally)) ||
+        (dy && (m_move_vertically || m_resize_vertically)))
+    {
+        bool was_visible = is_visible();
+        if (was_visible)
+            hide_and_inval();
+        if (m_resize_horizontally)
+            (**m_control).contrlRect.right += dx;
+        if (m_resize_vertically)
+            (**m_control).contrlRect.bottom += dy;
+        if (!m_move_horizontally)
+            dx = 0;
+        if (!m_move_vertically)
+            dy = 0;
+        if (dx || dy)
+            OffsetRect(&(**m_control).contrlRect, dx, dy);
+        if (was_visible)
+            show_and_inval();
+    }
 }

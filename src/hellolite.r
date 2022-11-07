@@ -63,10 +63,10 @@
 #define k_address_bar_right (k_reload_button_left - k_header_button_x_padding - k_text_field_inset)
 #define k_address_bar_bottom (k_home_button_bottom - k_text_field_inset)
 
-#define k_web_view_left 0
-#define k_web_view_top (k_header_height + 1)
-#define k_web_view_right (k_window_width - 15)
-#define k_web_view_bottom (k_window_height - 15)
+#define k_browser_left 0
+#define k_browser_top (k_header_height + 1)
+#define k_browser_right (k_window_width - 15)
+#define k_browser_bottom (k_window_height - 15)
 
 resource 'ALRT' (r_ALRT_fatal_error) {
 	{84, 64, 198, 448},
@@ -168,8 +168,8 @@ resource 'CNTL' (r_CNTL_vertical_scroll_bar, purgeable) {
 	""
 };
 
-resource 'CNTL' (r_CNTL_web_view, purgeable) {
-	{k_web_view_top, k_web_view_left, k_web_view_bottom, k_web_view_right},
+resource 'CNTL' (r_CNTL_browser, purgeable) {
+	{k_browser_top, k_browser_left, k_browser_bottom, k_browser_right},
 	0,
 	visible,
 	0,
