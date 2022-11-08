@@ -23,7 +23,7 @@ quickdraw_container::~quickdraw_container()
 {
 }
 
-litehtml::uint_ptr quickdraw_container::create_font(const litehtml::tchar_t *face_name, int size, int weight, litehtml::font_style italic, unsigned int decoration, litehtml::font_metrics *fm)
+litehtml::uint_ptr quickdraw_container::create_font(const char *face_name, int size, int weight, litehtml::font_style italic, unsigned int decoration, litehtml::font_metrics *fm)
 {
     StyleParameter style = normal;
     if (weight >= 700)
@@ -52,13 +52,13 @@ void quickdraw_container::delete_font(litehtml::uint_ptr hFont)
     delete font;
 }
 
-int quickdraw_container::text_width(const litehtml::tchar_t *text, litehtml::uint_ptr hFont)
+int quickdraw_container::text_width(const char *text, litehtml::uint_ptr hFont)
 {
     quickdraw_font *font = reinterpret_cast<quickdraw_font *>(hFont);
     return font->width(text);
 }
 
-void quickdraw_container::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t *text, litehtml::uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos)
+void quickdraw_container::draw_text(litehtml::uint_ptr hdc, const char *text, litehtml::uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos)
 {
     quickdraw_font *font = reinterpret_cast<quickdraw_font *>(hFont);
     font->draw(text, pos);
@@ -74,7 +74,7 @@ int quickdraw_container::get_default_font_size() const
     return pt_to_px(12);
 }
 
-const litehtml::tchar_t *quickdraw_container::get_default_font_name() const
+const char *quickdraw_container::get_default_font_name() const
 {
     return "Helvetica";
 }
@@ -83,11 +83,11 @@ void quickdraw_container::draw_list_marker(litehtml::uint_ptr hdc, const litehtm
 {
 }
 
-void quickdraw_container::load_image(const litehtml::tchar_t *src, const litehtml::tchar_t *base_url, bool redraw_on_ready)
+void quickdraw_container::load_image(const char *src, const char *base_url, bool redraw_on_ready)
 {
 }
 
-void quickdraw_container::get_image_size(const litehtml::tchar_t *src, const litehtml::tchar_t *base_url, litehtml::size& sz)
+void quickdraw_container::get_image_size(const char *src, const char *base_url, litehtml::size& sz)
 {
 }
 
@@ -99,7 +99,7 @@ void quickdraw_container::draw_borders(litehtml::uint_ptr hdc, const litehtml::b
 {
 }
 
-void quickdraw_container::set_base_url(const litehtml::tchar_t *base_url)
+void quickdraw_container::set_base_url(const char *base_url)
 {
 }
 
@@ -107,15 +107,15 @@ void quickdraw_container::link(const std::shared_ptr<litehtml::document>& doc, c
 {
 }
 
-void quickdraw_container::on_anchor_click(const litehtml::tchar_t *url, const litehtml::element::ptr& el)
+void quickdraw_container::on_anchor_click(const char *url, const litehtml::element::ptr& el)
 {
 }
 
-void quickdraw_container::set_cursor(const litehtml::tchar_t *cursor)
+void quickdraw_container::set_cursor(const char *cursor)
 {
 }
 
-void quickdraw_container::transform_text(litehtml::tstring& text, litehtml::text_transform tt)
+void quickdraw_container::transform_text(litehtml::string& text, litehtml::text_transform tt)
 {
     if (!text.empty())
     {
@@ -134,7 +134,7 @@ void quickdraw_container::transform_text(litehtml::tstring& text, litehtml::text
     }
 }
 
-void quickdraw_container::import_css(litehtml::tstring& text, const litehtml::tstring& url, litehtml::tstring& base_url)
+void quickdraw_container::import_css(litehtml::string& text, const litehtml::string& url, litehtml::string& base_url)
 {
 }
 
@@ -146,7 +146,7 @@ void quickdraw_container::del_clip()
 {
 }
 
-std::shared_ptr<litehtml::element> quickdraw_container::create_element(const litehtml::tchar_t *tag_name, const litehtml::string_map &attributes, const std::shared_ptr<litehtml::document> &doc)
+std::shared_ptr<litehtml::element> quickdraw_container::create_element(const char *tag_name, const litehtml::string_map &attributes, const std::shared_ptr<litehtml::document> &doc)
 {
     return nullptr;
 }
@@ -155,6 +155,6 @@ void quickdraw_container::get_media_features(litehtml::media_features& media) co
 {
 }
 
-void quickdraw_container::get_language(litehtml::tstring& language, litehtml::tstring& culture) const
+void quickdraw_container::get_language(litehtml::string& language, litehtml::string& culture) const
 {
 }

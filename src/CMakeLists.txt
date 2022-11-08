@@ -26,7 +26,6 @@ set(app_SOURCES
 if(USE_LITEHTML)
     list(APPEND app_SOURCES
         ${CMAKE_CURRENT_BINARY_DIR}/home.html.r
-        ${CMAKE_CURRENT_BINARY_DIR}/master.css.r
         quickdraw_container.cpp
         quickdraw_font.cpp
     )
@@ -77,21 +76,6 @@ endif()
 if(USE_LITEHTML)
     ExternalProject_Get_Property(litehtml SOURCE_DIR)
 
-    set(text_file ${SOURCE_DIR}/include/master.css)
-    set(rez_file ${CMAKE_CURRENT_BINARY_DIR}/master.css.r)
-    add_custom_command(
-        COMMAND ${CMAKE_COMMAND}
-            -Dinfile=${text_file}
-            -Doutfile=${rez_file}
-            -Drsrc_type=TEXT
-            -Drsrc_id=128
-            -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/text_to_rez.cmake
-        DEPENDS ${text_file}
-        OUTPUT ${rez_file}
-        VERBATIM
-    )
-    add_custom_target(make_css_rez DEPENDS ${rez_file})
-
     set(text_file ${CMAKE_CURRENT_SOURCE_DIR}/home.html)
     set(rez_file ${CMAKE_CURRENT_BINARY_DIR}/home.html.r)
     add_custom_command(
@@ -99,7 +83,7 @@ if(USE_LITEHTML)
             -Dinfile=${text_file}
             -Doutfile=${rez_file}
             -Drsrc_type=TEXT
-            -Drsrc_id=129
+            -Drsrc_id=r_TEXT_html
             -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/text_to_rez.cmake
         DEPENDS ${text_file}
         OUTPUT ${rez_file}
@@ -107,7 +91,7 @@ if(USE_LITEHTML)
     )
     add_custom_target(make_html_rez DEPENDS ${rez_file})
 
-    add_dependencies(app litehtml make_css_rez make_html_rez)
+    add_dependencies(app litehtml make_html_rez)
 
     target_include_directories(app SYSTEM PRIVATE
         ${litehtml_INCLUDE_DIR}

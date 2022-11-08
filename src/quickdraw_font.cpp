@@ -33,7 +33,7 @@ quickdraw_font::~quickdraw_font()
     ClosePort(&m_port);
 }
 
-void quickdraw_font::draw(const litehtml::tchar_t *text, const litehtml::position& pos)
+void quickdraw_font::draw(const char *text, const litehtml::position& pos)
 {
     set_port_font();
     MoveTo(pos.x, pos.y + m_metrics.ascent);
@@ -46,7 +46,7 @@ void quickdraw_font::draw(const litehtml::tchar_t *text, const litehtml::positio
 */
 }
 
-int16_t quickdraw_font::width(const litehtml::tchar_t *text)
+int16_t quickdraw_font::width(const char *text)
 {
     GrafPtr saved_port;
     GetPort(&saved_port);

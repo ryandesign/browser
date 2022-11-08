@@ -26,20 +26,6 @@ browser_app::browser_app() : base_app()
     if (load_menu_bar(r_MBAR) != noErr)
         fatal_error_alert(e_no_resource);
 
-#ifdef USE_LITEHTML
-    {
-        Handle css = Get1Resource('TEXT', r_TEXT_css);
-        if (css)
-        {
-            HLock(css);
-            browser_document::set_default_css(*css);
-            ReleaseResource(css);
-        }
-        else
-            fatal_error_alert(e_no_resource);
-    }
-#endif
-
     adjust_menu_bar();
     adjust_menu_items();
 }

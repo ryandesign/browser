@@ -22,8 +22,8 @@ class quickdraw_font
         quickdraw_font(const char *name, int16_t size, StyleParameter style = normal);
         quickdraw_font(int16_t id, int16_t size, StyleParameter style = normal);
         ~quickdraw_font();
-        void draw(const litehtml::tchar_t *text, const litehtml::position& pos);
-        int16_t width(const litehtml::tchar_t *text);
+        void draw(const char *text, const litehtml::position& pos);
+        int16_t width(const char *text);
         FontInfo& metrics();
 
     private:

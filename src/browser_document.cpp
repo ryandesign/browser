@@ -8,10 +8,6 @@
 
 #include "helpers.h"
 
-#ifdef USE_LITEHTML
-litehtml::context browser_document::s_context;
-#endif
-
 browser_document::browser_document()
     : m_scroll({0, 0})
 {
@@ -21,17 +17,10 @@ browser_document::~browser_document()
 {
 }
 
-void browser_document::set_default_css(const char *const css)
-{
-#ifdef USE_LITEHTML
-    s_context.load_master_stylesheet(css);
-#endif
-}
-
 void browser_document::set_html(const char *const html, browser_control& control)
 {
 #ifdef USE_LITEHTML
-    m_lite_document = litehtml::document::createFromUTF8(html, &control, &s_context);
+    m_lite_document = litehtml::document::createFromString(html, &control);
     m_rendered_width = 0;
 #endif
     SetPt(&m_scroll, 0, 0);

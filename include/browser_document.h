@@ -20,7 +20,6 @@ class browser_document
 
         browser_document();
         ~browser_document();
-        static void set_default_css(const char *const css);
         void set_html(const char *const html, browser_control& control);
         void render_if_needed(int width);
         void draw(Rect const& rect);
@@ -28,7 +27,6 @@ class browser_document
 
     private:
 #ifdef USE_LITEHTML
-        static litehtml::context s_context;
         litehtml::document::ptr m_lite_document;
         int16_t m_rendered_width;
 #endif
