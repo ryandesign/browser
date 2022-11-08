@@ -16,6 +16,7 @@
 #include <Resources.h>
 #include <ToolUtils.h>
 
+#include "base_control.h"
 #include "base_window.h"
 #include "helpers.h"
 #include "machine.h"
@@ -112,7 +113,7 @@ void base_app::consume_event()
     }
 }
 
-void base_app::on_event(EventRecord const& event)
+void base_app::on_event(EventRecord& event)
 {
     WindowPeek window;
 
@@ -149,7 +150,7 @@ void base_app::on_idle_event(EventRecord const& event)
         window_obj->idle(event);
 }
 
-void base_app::on_mouse_down_event(EventRecord const& event)
+void base_app::on_mouse_down_event(EventRecord& event)
 {
     WindowPtr window;
     int16_t part = FindWindow(event.where, &window);
@@ -186,10 +187,23 @@ void base_app::on_mouse_down_event(EventRecord const& event)
     }
 }
 
-void base_app::content_click(WindowRecord const& window, EventRecord const& event)
+void base_app::content_click(WindowRecord& window, EventRecord& event)
 {
-    if (base_window *window_obj = base_window::get_from_window(window))
-        window_obj->on_click(event);
+    GrafPtr saved_port;
+    GetPort(&saved_port);
+    SetPort(reinterpret_cast<WindowPtr>(&window));
+    GlobalToLocal(&event.where);
+    ControlHandle control;
+    int16_t part;
+    if (machine::has_appearance())
+        control = FindControlUnderMouse(event.where, reinterpret_cast<WindowPtr>(&window), &part);
+    else
+        part = FindControl(event.where, reinterpret_cast<WindowPtr>(&window), &control);
+    if (base_control *control_obj = base_control::get_from_control(control))
+        control_obj->on_mouse_down(event, part);
+    else if (base_window *window_obj = base_window::get_from_window(window))
+        window_obj->on_mouse_down(event);
+    SetPort(saved_port);
 }
 
 void base_app::grow_window(WindowRecord& window, EventRecord const& event)

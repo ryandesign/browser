@@ -96,7 +96,7 @@ void base_window::adjust_menu_items()
 {
 }
 
-void base_window::on_click(EventRecord const& event)
+void base_window::on_mouse_down(EventRecord const& event)
 {
 }
 

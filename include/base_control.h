@@ -34,7 +34,11 @@ class base_control
         int16_t get_value() const;
         void set_value(int16_t value);
         OSErr set_data(ControlPartCode part, ResType tag, size_t size, void const* data);
+        OSErr embed(base_control& control);
         void window_did_resize(int16_t dx, int16_t dy);
+        void on_mouse_down(EventRecord const& event, int16_t part);
+        void on_mouse_up(EventRecord const& event, int16_t part);
+        virtual ControlActionUPP get_action_proc(int16_t part);
 
     protected:
         ControlHandle m_control;

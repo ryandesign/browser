@@ -28,7 +28,7 @@ class base_window
         // TODO: Do windows really need to be able to adjust and handle menus?
         virtual void adjust_menu_bar();
         virtual void adjust_menu_items();
-        virtual void on_click(EventRecord const& event);
+        virtual void on_mouse_down(EventRecord const& event);
         virtual void idle(EventRecord const& event);
         virtual void on_key_down(EventRecord const& event);
         virtual void on_menu(int16_t menu, int16_t item);

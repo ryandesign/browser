@@ -22,6 +22,11 @@ browser_window::browser_window()
       m_horizontal_scroll_bar(r_CNTL_horizontal_scroll_bar, m_window),
       m_vertical_scroll_bar(r_CNTL_vertical_scroll_bar, m_window)
 {
+    m_header.embed(m_back_button);
+    m_header.embed(m_forward_button);
+    m_header.embed(m_home_button);
+    m_header.embed(m_reload_button);
+    m_header.embed(m_address_bar);
 #ifdef USE_LITEHTML
     Handle html = Get1Resource('TEXT', r_TEXT_html);
     if (!html)

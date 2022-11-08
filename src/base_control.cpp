@@ -7,6 +7,7 @@
 #include <new>
 
 #include "ResourceConstants.h"
+#include "machine.h"
 
 base_control::base_control(int16_t resource_id, WindowRecord& window)
 {
@@ -136,6 +137,11 @@ OSErr base_control::set_data(ControlPartCode part, ResType tag, size_t size, voi
     return SetControlData(m_control, part, tag, size, data);
 }
 
+OSErr base_control::embed(base_control& control)
+{
+    return EmbedControl(control.m_control, m_control);
+}
+
 void base_control::window_did_resize(int16_t dx, int16_t dy)
 {
     if ((dx && (m_move_horizontally || m_resize_horizontally)) ||
@@ -157,4 +163,23 @@ void base_control::window_did_resize(int16_t dx, int16_t dy)
         if (was_visible)
             show_and_inval();
     }
+}
+
+void base_control::on_mouse_down(EventRecord const& event, int16_t part)
+{
+    if (machine::has_appearance())
+        part = HandleControlClick(m_control, event.where, event.modifiers, get_action_proc(part));
+    else
+        part = TrackControl(m_control, event.where, get_action_proc(part));
+    if (part)
+        on_mouse_up(event, part);
+}
+
+void base_control::on_mouse_up(EventRecord const& event, int16_t part)
+{
+}
+
+ControlActionUPP base_control::get_action_proc(int16_t part)
+{
+    return nullptr;
 }

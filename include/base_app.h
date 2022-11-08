@@ -18,10 +18,10 @@ class base_app
         void run();
         OSErr load_menu_bar(int16_t mbar_id);
         void consume_event();
-        void on_event(EventRecord const& event);
+        void on_event(EventRecord& event);
         void on_idle_event(EventRecord const& event);
-        void on_mouse_down_event(EventRecord const& event);
-        void content_click(WindowRecord const& window, EventRecord const& event);
+        void on_mouse_down_event(EventRecord& event);
+        void content_click(WindowRecord& window, EventRecord& event);
         void grow_window(WindowRecord& window, EventRecord const& event);
         void close_window(WindowRecord& window);
         void zoom_window(WindowRecord& window, int16_t part);
