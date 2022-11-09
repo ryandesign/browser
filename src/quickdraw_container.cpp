@@ -119,16 +119,16 @@ void quickdraw_container::transform_text(litehtml::string& text, litehtml::text_
 {
     if (!text.empty())
     {
-        switch(tt)
+        switch (tt)
         {
             case litehtml::text_transform_capitalize:
                 UppercaseText(&text[0], 1, smCurrentScript);
                 break;
             case litehtml::text_transform_uppercase:
-                UppercaseText(&text[0], strlen(text.c_str()), smCurrentScript);
+                UppercaseText(&text[0], text.length(), smCurrentScript);
                 break;
             case litehtml::text_transform_lowercase:
-                LowercaseText(&text[0], strlen(text.c_str()), smCurrentScript);
+                LowercaseText(&text[0], text.length(), smCurrentScript);
                 break;
         }
     }
