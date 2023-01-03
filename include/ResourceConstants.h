@@ -7,6 +7,8 @@
 #define k_resize_horizontally (1 << 2)
 #define k_resize_vertically (1 << 3)
 
+#define k_toolbar_icons_base 28672
+
 #define r_ALRT_fatal_error 128
 
 #define r_CNTL_header 128
@@ -22,11 +24,11 @@
 
 #define r_DITL_fatal_error 128
 
-#define r_icsx_back 128
-#define r_icsx_forward 129
-#define r_icsx_home 130
-#define r_icsx_reload 131
-#define r_icsx_stop 132
+#define r_icsx_back (k_toolbar_icons_base + 0)
+#define r_icsx_forward (k_toolbar_icons_base + 1)
+#define r_icsx_home (k_toolbar_icons_base + 2)
+#define r_icsx_reload (k_toolbar_icons_base + 3)
+#define r_icsx_stop (k_toolbar_icons_base + 4)
 
 #define r_MBAR 128
 
