@@ -20,7 +20,7 @@ class quickdraw_container : public litehtml::document_container
         quickdraw_container();
         ~quickdraw_container();
 
-        litehtml::uint_ptr create_font(const char *face_name, int size, int weight, litehtml::font_style italic, unsigned int decoration, litehtml::font_metrics *fm);
+        litehtml::uint_ptr create_font(const char *face_name, int size, int weight, litehtml::font_style italic_style, unsigned int decoration, litehtml::font_metrics *fm);
         void delete_font(litehtml::uint_ptr hFont);
         int text_width(const char *text, litehtml::uint_ptr hFont);
         void draw_text(litehtml::uint_ptr hdc, const char *text, litehtml::uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos);
