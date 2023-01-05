@@ -3,6 +3,17 @@
 # SPDX-License-Identifier: MIT
 
 file(READ ${infile} data)
+set(result 0)
+while(NOT ${result} EQUAL -1)
+    string(FIND "${data}" "<!--" result)
+    if(NOT ${result} EQUAL -1)
+        string(FIND "${data}" "-->" result)
+        if(NOT ${result} EQUAL -1)
+            string(REGEX REPLACE "-->(.*)" "<><>\\1" data "${data}")
+            string(REGEX REPLACE "<!--.*<><>" "" data "${data}")
+        endif()
+    endif()
+endwhile()
 string(REGEX REPLACE "[ \t]*[\n\r]+[ \t]*" "\r" data "${data}")
 string(REGEX REPLACE "\r$" "" data "${data}")
 string(HEX "${data}" data)
