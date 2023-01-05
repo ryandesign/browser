@@ -21,7 +21,7 @@ if(USE_LITEHTML)
             -DBUILD_TESTING=OFF
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             "-DCMAKE_C_FLAGS=${include_directories} ${compile_options} -DTYPE_BOOL"
-            "-DCMAKE_CXX_FLAGS=${include_directories} ${compile_options}"
+            "-DCMAKE_CXX_FLAGS=${include_directories} ${compile_options} -DLITEHTML_NO_THREADS"
             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         INSTALL_COMMAND ""

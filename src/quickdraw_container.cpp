@@ -27,13 +27,9 @@ litehtml::uint_ptr quickdraw_container::create_font(const char *face_name, int s
 {
     StyleParameter style = normal;
     if (weight >= 700)
-    {
         style |= bold;
-    }
-    if (litehtml::fontStyleItalic == italic)
-    {
+    if (litehtml::font_style_italic == italic)
         style |= italic;
-    }
     if (decoration & litehtml::font_decoration_underline)
         style |= underline;
     quickdraw_font *font = new quickdraw_font(face_name, size, style);
