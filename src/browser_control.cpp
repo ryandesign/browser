@@ -31,7 +31,7 @@ void browser_control::get_client_rect(litehtml::position& client) const
 {
     Rect rect = get_rect();
     client.x = rect.left;
-    client.y = rect.right;
+    client.y = rect.top;
     client.width = rect_width(rect);
     client.height = rect_height(rect);
 }
